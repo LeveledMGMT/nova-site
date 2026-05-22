@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nova — Privacy Policy</title>
+<meta name="description" content="Privacy Policy for Nova Concierge.">
+<meta property="og:title" content="Nova — Privacy Policy">
+<meta property="og:description" content="Privacy Policy for Nova Concierge.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nova Concierge">
+<meta property="og:image" content="/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/og-image.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..600&family=Hanken+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#e9c98a; --gold-hi:#fff3d6; --gold-deep:#b78a3f;
+    --cream:#efeaf2; --cream-dim:#c2bcd4; --cream-faint:#857f96;
+    --line:rgba(233,201,138,.22);
+    --bg-a:#1c1f42; --bg-b:#0c0d22; --bg-c:#060611;
+    --glow:rgba(233,201,138,.13);
+    --card-line:rgba(243,236,221,.10);
+    --display:"Fraunces",Georgia,serif; --ui:"Hanken Grotesk",-apple-system,sans-serif; --mono:"JetBrains Mono",monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --ink:#2a1c06;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth; scrollbar-width:none}
+  html::-webkit-scrollbar{display:none}
+  body{font-family:var(--ui); color:var(--cream); background:var(--bg-c); -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.7}
+  ::selection{background:var(--gold); color:var(--ink)}
+
+  #atmos{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(125% 95% at 50% 4%, var(--bg-a) 0%, var(--bg-b) 52%, var(--bg-c) 100%)}
+  #grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  header{position:fixed; top:0; left:0; right:0; z-index:9; display:flex; align-items:center; padding:26px 40px; pointer-events:none}
+  header > *{pointer-events:auto}
+  .wordmark{font-family:var(--display); font-weight:600; letter-spacing:.42em; text-transform:uppercase; color:var(--cream); font-size:14px; text-decoration:none}
+  .wordmark .dot{color:var(--gold)}
+
+  .hbtn{position:fixed; top:24px; right:28px; z-index:12; width:48px; height:48px; border:none;
+    background:rgba(255,255,255,.06); border-radius:14px; cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px; transition:all .3s var(--ease);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(233,201,138,.08); box-shadow:0 4px 24px -8px rgba(0,0,0,.3)}
+  .hbtn:hover{background:rgba(233,201,138,.10); border-color:rgba(233,201,138,.22);
+    box-shadow:0 4px 32px -8px rgba(233,201,138,.18)}
+  .hbtn span{display:block; width:20px; height:1.5px; background:var(--gold); border-radius:2px;
+    transition:all .35s var(--ease); transform-origin:center}
+  .hbtn.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .hbtn.open span:nth-child(2){opacity:0; transform:scaleX(0)}
+  .hbtn.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+  .hpanel{position:fixed; top:0; right:0; z-index:11; width:320px; height:100vh;
+    background:rgba(6,6,17,.88); border-left:1px solid var(--card-line);
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+    transform:translateX(100%); transition:transform .45s var(--ease);
+    display:flex; flex-direction:column; padding:100px 36px 48px}
+  .hpanel::before{content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.5}
+  .hpanel.open{transform:none}
+  .hpanel a{display:block; padding:18px 0; color:var(--cream-dim); text-decoration:none;
+    font-family:var(--display); font-weight:400; font-size:22px; letter-spacing:.02em;
+    border-bottom:1px solid rgba(243,236,221,.06); transition:color .25s, padding-left .3s var(--ease)}
+  .hpanel a:hover{color:var(--gold-hi); padding-left:8px}
+  .hpanel a:first-child{border-top:1px solid rgba(243,236,221,.06)}
+  .hpanel .hfoot{margin-top:24px; font-family:var(--display); font-weight:600; font-size:16px;
+    letter-spacing:.4em; text-transform:uppercase; color:rgba(239,234,242,.12)}
+  .hpanel .hfoot .dot{color:rgba(233,201,138,.25)}
+  .hpanel .hcta{margin-top:auto; text-align:center; font-family:var(--ui); font-weight:600; font-size:15px;
+    background:linear-gradient(180deg,var(--gold-hi),var(--gold)); color:#2a1c06; border-radius:100px;
+    padding:16px 28px; border:none; letter-spacing:.02em;
+    box-shadow:0 12px 36px -10px rgba(233,201,138,.5);
+    transition:transform .35s var(--ease), box-shadow .35s}
+  .hpanel .hcta:hover{color:#2a1c06; padding-left:0; transform:translateY(-2px);
+    box-shadow:0 18px 44px -10px rgba(233,201,138,.7)}
+  .hoverlay{position:fixed; inset:0; z-index:10; background:rgba(0,0,0,.4); opacity:0; pointer-events:none;
+    transition:opacity .35s; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px)}
+  .hoverlay.open{opacity:1; pointer-events:auto}
+
+  main{position:relative; z-index:3; max-width:720px; margin:0 auto; padding:140px 32px 100px}
+  h1{font-family:var(--display); font-weight:300; line-height:1.02;
+    font-size:clamp(32px,6vw,52px); letter-spacing:-.02em; margin-bottom:8px}
+  h1 em{font-style:italic; color:var(--gold-hi)}
+  .updated{font-family:var(--mono); font-size:11px; color:var(--cream-faint); letter-spacing:.1em; margin-bottom:48px}
+  h2{font-family:var(--display); font-weight:400; font-size:clamp(22px,3.5vw,30px); color:var(--cream);
+    margin:48px 0 16px; letter-spacing:-.01em}
+  h2 em{font-style:italic; color:var(--gold-hi)}
+  p,li{color:var(--cream-dim); font-size:16px; font-weight:300; line-height:1.7; margin-bottom:14px}
+  ul,ol{padding-left:24px; margin-bottom:14px}
+  li{margin-bottom:8px}
+  strong{color:var(--cream); font-weight:600}
+  a{color:var(--gold); text-decoration:underline; text-underline-offset:3px}
+  a:hover{color:var(--gold-hi)}
+  table{width:100%; border-collapse:collapse; margin:16px 0 24px}
+  th,td{text-align:left; padding:12px 16px; border-bottom:1px solid var(--card-line); font-size:14px; font-weight:300; color:var(--cream-dim)}
+  th{color:var(--cream-faint); font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:600}
+
+  @media (max-width:600px){
+    header{padding:16px 20px}
+    .wordmark{font-size:11px; letter-spacing:.32em}
+    main{padding:110px 20px 80px}
+    .hbtn{top:14px; right:16px; width:44px; height:44px}
+    .hpanel{width:280px; padding:90px 28px 40px}
+  }
+</style>
+</head>
+<body>
+  <div id="atmos"></div>
+  <div id="grain"></div>
+
+  <button class="hbtn" id="hbtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="hoverlay" id="hoverlay"></div>
+  <nav class="hpanel" id="hpanel">
+    <a href="/">Home</a>
+    <a href="/story">The Story</a>
+    <a href="/faq">Partners FAQ</a>
+    <a href="/field-notes">Field Notes</a>
+    <a href="/contact">Contact</a>
+    <a href="/order" class="hcta">Start Your Experience</a>
+    <div class="hfoot">Nova<span class="dot">.</span></div>
+  </nav>
+
+  <header>
+    <a href="/" class="wordmark">Nova<span class="dot">.</span></a>
+  </header>
+
+  <main>
+    <h1>Privacy <em>Policy</em></h1>
+    <p class="updated">Effective date: May 21, 2026 &middot; Last updated: May 21, 2026</p>
+
+    <p>Nova Concierge ("Nova," "we," "us," or "our") operates a concierge provisioning service based in California. This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you use our website and services. We are committed to handling your data responsibly and in compliance with the California Consumer Privacy Act (CCPA), the California Privacy Rights Act (CPRA), and other applicable laws.</p>
+
+    <h2>1. Information We <em>Collect</em></h2>
+
+    <p><strong>Information you provide directly:</strong></p>
+    <table>
+      <tr><th>Data</th><th>CCPA Category</th><th>When collected</th><th>Purpose</th></tr>
+      <tr><td>Full name</td><td>Identifiers</td><td>Order form, contact form</td><td>Identify you, personalize service</td></tr>
+      <tr><td>Phone number</td><td>Identifiers</td><td>Order form</td><td>Send quotes, coordinate orders via SMS</td></tr>
+      <tr><td>Email address</td><td>Identifiers</td><td>Contact form</td><td>Respond to inquiries</td></tr>
+      <tr><td>Property address</td><td>Identifiers; Geolocation</td><td>Order form</td><td>Deliver and stock your order</td></tr>
+      <tr><td>Check-in date/time</td><td>Commercial information</td><td>Order form</td><td>Schedule delivery before arrival</td></tr>
+      <tr><td>Allergy/dietary info</td><td>Sensitive personal information (health)</td><td>Order form</td><td>Ensure safe product selection</td></tr>
+      <tr><td>Order details</td><td>Commercial information</td><td>Order form</td><td>Fulfill your specific requests</td></tr>
+      <tr><td>Payment information</td><td>Financial information</td><td>Payment link (third-party processor)</td><td>Process payment — we do not store card numbers</td></tr>
+    </table>
+
+    <p><strong>Information collected automatically:</strong></p>
+    <ul>
+      <li>Browser type, device type, and operating system (Internet or network activity)</li>
+      <li>IP address and approximate geographic location (Identifiers; Geolocation)</li>
+      <li>Pages visited, time spent, and referral source (Internet or network activity)</li>
+      <li>Cookies and similar tracking technologies (see Section 6)</li>
+    </ul>
+
+    <p><strong>Information from other sources:</strong> We may receive limited information from property managers or partners (e.g., property access instructions, check-in confirmation) to coordinate your order.</p>
+
+    <p><strong>Sensitive personal information:</strong> We collect allergy and dietary restriction information, which may be considered sensitive personal information under CPRA. This data is used solely to fulfill your order safely. You have the right to limit the use of your sensitive personal information to purposes necessary to provide the services you request. To exercise this right, please use our <a href="/contact">contact form</a>.</p>
+
+    <p><strong>Automated decision-making:</strong> Nova does not use automated decision-making technology (ADMT) to make decisions that produce legal or similarly significant effects on you.</p>
+
+    <h2>2. How We Use Your <em>Information</em></h2>
+    <p>We use your personal information for the following purposes:</p>
+    <ul>
+      <li><strong>Fulfill orders:</strong> Process, coordinate, and deliver your concierge order</li>
+      <li><strong>Communicate with you:</strong> Send quotes, order updates, substitution questions, delivery confirmations, and follow-ups via SMS and phone</li>
+      <li><strong>Respond to inquiries:</strong> Reply to messages submitted through our contact form</li>
+      <li><strong>Improve our services:</strong> Analyze usage patterns to enhance the website and ordering experience</li>
+      <li><strong>Legal compliance:</strong> Meet legal obligations, resolve disputes, and enforce our Terms of Service</li>
+    </ul>
+    <p>We do not sell your personal information. We do not use your information for unrelated marketing purposes.</p>
+
+    <h2>3. SMS &amp; Phone <em>Communications</em></h2>
+    <p>When you submit an order, you expressly consent to receive SMS text messages and phone calls from Nova at the number you provide. This consent is governed by the Telephone Consumer Protection Act (TCPA), 47 U.S.C. &sect; 227.</p>
+    <ul>
+      <li><strong>Types of messages:</strong> Quotes, payment links, order updates, substitution inquiries, delivery confirmations, and post-delivery follow-ups</li>
+      <li><strong>Frequency:</strong> Varies per order, typically 3&ndash;10 messages per order cycle</li>
+      <li><strong>Opt-out:</strong> Reply STOP to any message to opt out of non-transactional messages. Note: opting out of transactional messages during an active order may prevent us from fulfilling your request</li>
+      <li><strong>Cost:</strong> Standard message and data rates from your carrier may apply</li>
+    </ul>
+    <p>Your consent to receive SMS is not a condition of purchasing our services, except as reasonably necessary to coordinate your specific order.</p>
+
+    <h2>4. How We Share Your <em>Information</em></h2>
+    <p>We may share your information with the following parties, and only to the extent necessary:</p>
+    <ul>
+      <li><strong>Property managers/partners:</strong> Your name, check-in details, and order timing (not your full order) may be shared with the property manager to coordinate access</li>
+      <li><strong>Third-party alcohol providers:</strong> If your order includes alcohol, your name, delivery address, and alcohol-specific items are shared with a licensed third-party fulfillment provider</li>
+      <li><strong>Payment processors:</strong> Your payment information is handled by our third-party payment processor. We never see or store your full card number</li>
+      <li><strong>Service providers:</strong> We may use third-party tools for analytics, hosting, and SMS delivery that process data on our behalf under contractual obligations</li>
+      <li><strong>Legal requirements:</strong> We may disclose information if required by law, subpoena, court order, or to protect our rights, safety, or property</li>
+    </ul>
+    <p>We do not sell, rent, or trade your personal information to third parties for their own marketing purposes.</p>
+
+    <h2>5. Your Rights Under California <em>Law</em></h2>
+    <p>If you are a California resident, the CCPA and CPRA grant you the following rights:</p>
+    <ul>
+      <li><strong>Right to know:</strong> You may request a copy of the personal information we have collected about you, including the categories and sources of data, the business purpose for collecting it, and the categories of third parties with whom it was shared. Under CPRA, this right extends to data collected beyond the preceding 12 months where feasible</li>
+      <li><strong>Right to delete:</strong> You may request that we delete personal information we have collected from you, subject to certain legal exceptions (e.g., legal compliance, completing a transaction)</li>
+      <li><strong>Right to correct:</strong> You may request that we correct inaccurate personal information</li>
+      <li><strong>Right to limit use of sensitive personal information:</strong> You may direct us to limit the use of sensitive personal information (such as allergy data) to purposes necessary to provide our services</li>
+      <li><strong>Right to opt out of sale/sharing:</strong> We do not sell or share your personal information for cross-context behavioral advertising. There is nothing to opt out of</li>
+      <li><strong>Right to non-discrimination:</strong> We will not discriminate against you for exercising any of your privacy rights</li>
+    </ul>
+    <p>To exercise any of these rights, submit a request through our <a href="/contact">contact form</a> or by mail to: Nova Concierge, Newport Beach, CA. You may also designate an authorized agent to make a request on your behalf; we will require verification of the agent's authority. We will verify your identity before processing your request and respond within 45 days as required by law.</p>
+
+    <h2>6. Cookies &amp; <em>Tracking</em></h2>
+    <p>Our website uses minimal cookies and tracking technologies:</p>
+    <ul>
+      <li><strong>Essential cookies:</strong> Required for the website to function (e.g., form state, session persistence)</li>
+      <li><strong>Analytics:</strong> We may use privacy-respecting analytics tools to understand how visitors use our site. If we use specific third-party analytics (e.g., Cloudflare Web Analytics), we will link to their privacy policy here. No personal data is sold to advertisers</li>
+    </ul>
+    <p>We do not use third-party advertising cookies, retargeting pixels, or cross-site tracking. Your browser's "Do Not Track" signal and Global Privacy Control (GPC) signal are respected.</p>
+
+    <h2>7. Data <em>Retention</em></h2>
+    <p>We retain your personal information only as long as necessary to fulfill the purposes described in this policy:</p>
+    <ul>
+      <li><strong>Order data:</strong> Retained for 3 years after your last order for service quality, dispute resolution, tax obligations, and legal compliance</li>
+      <li><strong>Contact form submissions:</strong> Retained for 1 year</li>
+      <li><strong>Analytics data:</strong> Aggregated and anonymized within 90 days</li>
+    </ul>
+    <p>You may request deletion at any time, subject to legal retention requirements.</p>
+
+    <h2>8. Data <em>Security</em></h2>
+    <p>We implement commercially reasonable administrative, technical, and physical safeguards to protect your personal information from unauthorized access, disclosure, alteration, or destruction. These include encrypted connections (HTTPS/TLS), access controls, and secure third-party providers.</p>
+    <p>No method of transmission over the internet or electronic storage is 100% secure. While we strive to protect your data, we cannot guarantee absolute security.</p>
+
+    <h2>9. Children's <em>Privacy</em></h2>
+    <p>Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from minors. If we learn that we have collected information from a child under 18, we will promptly delete it. If you believe a minor has provided us with personal information, please <a href="/contact">contact us</a>.</p>
+
+    <h2>10. Notice at <em>Collection</em></h2>
+    <p>At or before the point of collection, we provide notice of the categories of personal information being collected and the purposes for which it will be used. On our order form, this notice is provided through the consent checkbox and a link to this Privacy Policy. On our contact form, this notice is provided through the form itself and the linked policy.</p>
+
+    <h2>11. Changes to This <em>Policy</em></h2>
+    <p>We may update this Privacy Policy from time to time. Changes take effect when posted on this page with an updated "Last updated" date. If we make material changes to how we handle your personal information, we will provide notice through the website or direct communication. Your continued use of our services after changes are posted constitutes acceptance of the revised policy.</p>
+
+    <h2>11. Users Outside <em>California</em></h2>
+    <p>Our services are primarily offered in California. If you access our website or use our services from outside California, your information will be processed in the United States. By using our services, you consent to the transfer and processing of your information in the United States, which may have different data protection laws than your jurisdiction.</p>
+
+    <h2>12. Contact <em>Us</em></h2>
+    <p>If you have questions about this Privacy Policy, wish to exercise your California privacy rights, or have any concerns about how we handle your data, please reach out through our <a href="/contact">contact form</a> or by mail:</p>
+    <p>Nova Concierge<br>Newport Beach, California</p>
+
+    <p style="margin-top:48px; color:var(--cream-faint); font-size:14px">See also: <a href="/terms">Terms of Service</a></p>
+  </main>
+
+<script>
+  (function(){
+    const btn=document.getElementById('hbtn'), panel=document.getElementById('hpanel'), overlay=document.getElementById('hoverlay');
+    function toggle(){ btn.classList.toggle('open'); panel.classList.toggle('open'); overlay.classList.toggle('open'); }
+    function close(){ btn.classList.remove('open'); panel.classList.remove('open'); overlay.classList.remove('open'); }
+    btn.addEventListener('click', toggle);
+    overlay.addEventListener('click', close);
+    panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+  })();
+</script>
+</body>
+</html>

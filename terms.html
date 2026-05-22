@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nova — Terms of Service</title>
+<meta name="description" content="Terms of Service for Nova Concierge.">
+<meta property="og:title" content="Nova — Terms of Service">
+<meta property="og:description" content="Terms of Service for Nova Concierge.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nova Concierge">
+<meta property="og:image" content="/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/og-image.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..600&family=Hanken+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#e9c98a; --gold-hi:#fff3d6; --gold-deep:#b78a3f;
+    --cream:#efeaf2; --cream-dim:#c2bcd4; --cream-faint:#857f96;
+    --line:rgba(233,201,138,.22);
+    --bg-a:#1c1f42; --bg-b:#0c0d22; --bg-c:#060611;
+    --glow:rgba(233,201,138,.13);
+    --card-line:rgba(243,236,221,.10);
+    --display:"Fraunces",Georgia,serif; --ui:"Hanken Grotesk",-apple-system,sans-serif; --mono:"JetBrains Mono",monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --ink:#2a1c06;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth; scrollbar-width:none}
+  html::-webkit-scrollbar{display:none}
+  body{font-family:var(--ui); color:var(--cream); background:var(--bg-c); -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.7}
+  ::selection{background:var(--gold); color:var(--ink)}
+
+  #atmos{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(125% 95% at 50% 4%, var(--bg-a) 0%, var(--bg-b) 52%, var(--bg-c) 100%)}
+  #grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  header{position:fixed; top:0; left:0; right:0; z-index:9; display:flex; align-items:center; padding:26px 40px; pointer-events:none}
+  header > *{pointer-events:auto}
+  .wordmark{font-family:var(--display); font-weight:600; letter-spacing:.42em; text-transform:uppercase; color:var(--cream); font-size:14px; text-decoration:none}
+  .wordmark .dot{color:var(--gold)}
+
+  .hbtn{position:fixed; top:24px; right:28px; z-index:12; width:48px; height:48px; border:none;
+    background:rgba(255,255,255,.06); border-radius:14px; cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px; transition:all .3s var(--ease);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(233,201,138,.08); box-shadow:0 4px 24px -8px rgba(0,0,0,.3)}
+  .hbtn:hover{background:rgba(233,201,138,.10); border-color:rgba(233,201,138,.22);
+    box-shadow:0 4px 32px -8px rgba(233,201,138,.18)}
+  .hbtn span{display:block; width:20px; height:1.5px; background:var(--gold); border-radius:2px;
+    transition:all .35s var(--ease); transform-origin:center}
+  .hbtn.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .hbtn.open span:nth-child(2){opacity:0; transform:scaleX(0)}
+  .hbtn.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+  .hpanel{position:fixed; top:0; right:0; z-index:11; width:320px; height:100vh;
+    background:rgba(6,6,17,.88); border-left:1px solid var(--card-line);
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+    transform:translateX(100%); transition:transform .45s var(--ease);
+    display:flex; flex-direction:column; padding:100px 36px 48px}
+  .hpanel::before{content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.5}
+  .hpanel.open{transform:none}
+  .hpanel a{display:block; padding:18px 0; color:var(--cream-dim); text-decoration:none;
+    font-family:var(--display); font-weight:400; font-size:22px; letter-spacing:.02em;
+    border-bottom:1px solid rgba(243,236,221,.06); transition:color .25s, padding-left .3s var(--ease)}
+  .hpanel a:hover{color:var(--gold-hi); padding-left:8px}
+  .hpanel a:first-child{border-top:1px solid rgba(243,236,221,.06)}
+  .hpanel .hfoot{margin-top:24px; font-family:var(--display); font-weight:600; font-size:16px;
+    letter-spacing:.4em; text-transform:uppercase; color:rgba(239,234,242,.12)}
+  .hpanel .hfoot .dot{color:rgba(233,201,138,.25)}
+  .hpanel .hcta{margin-top:auto; text-align:center; font-family:var(--ui); font-weight:600; font-size:15px;
+    background:linear-gradient(180deg,var(--gold-hi),var(--gold)); color:#2a1c06; border-radius:100px;
+    padding:16px 28px; border:none; letter-spacing:.02em;
+    box-shadow:0 12px 36px -10px rgba(233,201,138,.5);
+    transition:transform .35s var(--ease), box-shadow .35s}
+  .hpanel .hcta:hover{color:#2a1c06; padding-left:0; transform:translateY(-2px);
+    box-shadow:0 18px 44px -10px rgba(233,201,138,.7)}
+  .hoverlay{position:fixed; inset:0; z-index:10; background:rgba(0,0,0,.4); opacity:0; pointer-events:none;
+    transition:opacity .35s; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px)}
+  .hoverlay.open{opacity:1; pointer-events:auto}
+
+  main{position:relative; z-index:3; max-width:720px; margin:0 auto; padding:140px 32px 100px}
+  h1{font-family:var(--display); font-weight:300; line-height:1.02;
+    font-size:clamp(32px,6vw,52px); letter-spacing:-.02em; margin-bottom:8px}
+  h1 em{font-style:italic; color:var(--gold-hi)}
+  .updated{font-family:var(--mono); font-size:11px; color:var(--cream-faint); letter-spacing:.1em; margin-bottom:48px}
+  h2{font-family:var(--display); font-weight:400; font-size:clamp(22px,3.5vw,30px); color:var(--cream);
+    margin:48px 0 16px; letter-spacing:-.01em}
+  h2 em{font-style:italic; color:var(--gold-hi)}
+  p,li{color:var(--cream-dim); font-size:16px; font-weight:300; line-height:1.7; margin-bottom:14px}
+  ul,ol{padding-left:24px; margin-bottom:14px}
+  li{margin-bottom:8px}
+  strong{color:var(--cream); font-weight:600}
+  a{color:var(--gold); text-decoration:underline; text-underline-offset:3px}
+  a:hover{color:var(--gold-hi)}
+
+  @media (max-width:600px){
+    header{padding:16px 20px}
+    .wordmark{font-size:11px; letter-spacing:.32em}
+    main{padding:110px 20px 80px}
+    .hbtn{top:14px; right:16px; width:44px; height:44px}
+    .hpanel{width:280px; padding:90px 28px 40px}
+  }
+</style>
+</head>
+<body>
+  <div id="atmos"></div>
+  <div id="grain"></div>
+
+  <button class="hbtn" id="hbtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="hoverlay" id="hoverlay"></div>
+  <nav class="hpanel" id="hpanel">
+    <a href="/">Home</a>
+    <a href="/story">The Story</a>
+    <a href="/faq">Partners FAQ</a>
+    <a href="/field-notes">Field Notes</a>
+    <a href="/contact">Contact</a>
+    <a href="/order" class="hcta">Start Your Experience</a>
+    <div class="hfoot">Nova<span class="dot">.</span></div>
+  </nav>
+
+  <header>
+    <a href="/" class="wordmark">Nova<span class="dot">.</span></a>
+  </header>
+
+  <main>
+    <h1>Terms of <em>Service</em></h1>
+    <p class="updated">Effective date: May 21, 2026 &middot; Last updated: May 21, 2026</p>
+
+    <p>These Terms of Service ("Terms") govern your use of the website, services, and ordering platform operated by Nova Concierge ("Nova," "we," "us," or "our"), a California-based concierge provisioning service. By accessing our website or submitting an order, you ("you," "Customer," or "Guest") agree to be bound by these Terms and our <a href="/privacy">Privacy Policy</a>, which is incorporated herein by reference. If you do not agree, do not use our services.</p>
+    <p><strong>You represent that you are at least 18 years of age and have the legal capacity to enter into these Terms.</strong> If you are placing an order on behalf of another person or group, you represent that you have the authority to bind them to these Terms.</p>
+
+    <h2>1. Nature of <em>Service</em></h2>
+    <p>Nova is a concierge provisioning service — not a grocery store, delivery app, or retailer. We purchase, source, and stock goods in short-term rental properties on behalf of guests prior to their arrival. We act as your personal concierge and purchasing agent. Title to all goods passes directly from the retailer or supplier to you upon purchase.</p>
+    <p>Nova does not sell alcohol. Any alcoholic beverages included in an order are sourced and fulfilled by a separately licensed third-party provider. Nova acts solely as a facilitator for such requests and makes no representations or warranties regarding alcohol products.</p>
+
+    <h2>2. Orders &amp; <em>Quotes</em></h2>
+    <p>When you submit an order through our platform, you are submitting a request for services — not completing a purchase. After receiving your order, we will review it and send you a quote via SMS to the phone number you provide. The quote is an all-in price that includes the cost of goods, sourcing, delivery, and our service fee.</p>
+    <p><strong>No order is confirmed until you accept the quote and complete payment via the link provided.</strong> We reserve the right to decline any order at our sole discretion.</p>
+    <p>Quotes are valid for 48 hours from the time they are sent. After that period, the quote automatically expires, pricing may change, and a new quote will be required. To receive a new quote, you may resubmit your order or contact us.</p>
+
+    <h2>3. Accuracy of <em>Information</em></h2>
+    <p>You are responsible for the accuracy of all information provided in your order, including but not limited to:</p>
+    <ul>
+      <li>Allergy and dietary restriction information</li>
+      <li>Item names, brands, sizes, and quantities</li>
+      <li>Substitution preferences</li>
+      <li>Property address and access instructions</li>
+      <li>Check-in date and time</li>
+      <li>Contact information</li>
+    </ul>
+    <p>Nova is not liable for any issues arising from inaccurate, incomplete, or misleading information provided by you. The order confirmation checkbox at submission constitutes your acknowledgment that your order is complete and accurate as submitted.</p>
+
+    <h2>4. Allergies &amp; <em>Dietary Restrictions</em></h2>
+    <p><strong>You must disclose all allergies and dietary restrictions before building your order.</strong> Nova will make commercially reasonable efforts to honor allergy and avoidance requests, but we cannot guarantee that products are free from allergens due to cross-contamination risks at the manufacturer, retailer, or during transport.</p>
+    <p><strong>If you or anyone in your party has a severe or life-threatening allergy, we strongly recommend you do not rely solely on our service for allergen-free products.</strong> By proceeding with an order, you acknowledge and assume all risk associated with potential allergen exposure in products we source or deliver. Nova is not liable for allergic reactions or adverse health effects resulting from the consumption of any products provided through our service.</p>
+
+    <h2>5. Substitutions</h2>
+    <p>You select a default substitution rule when placing your order. This rule governs what happens if a specific item is unavailable. You may also set per-item overrides. Nova will follow your substitution preferences as stated. If your rule is "text me first," we will attempt to reach you via SMS; if we do not receive a response within 2 hours of our message, the item may be skipped to ensure timely fulfillment.</p>
+
+    <h2>6. Property <em>Access</em></h2>
+    <p>By submitting an order, you represent and warrant that you have the legal right to authorize Nova to enter the specified rental property for the purpose of stocking your order. You are responsible for coordinating property access (smart lock codes, lockbox information, etc.) either directly or through your property manager.</p>
+    <p>Nova is not liable for any property damage that occurs during the normal course of stocking an order, except where caused by our gross negligence or willful misconduct. You agree to indemnify Nova against any claims by a property owner, property manager, or third party arising from your authorization of our entry into the property, including claims of unauthorized access where you provided incorrect or insufficient access information.</p>
+
+    <h2>7. Pricing &amp; <em>Payment</em></h2>
+    <p>All prices quoted are in U.S. dollars. The all-in quote you receive includes the retail cost of goods, sourcing fees, delivery, and our concierge service fee. There are no hidden charges beyond the quoted amount.</p>
+    <p>Payment is processed via the secure link included in your quote. We accept major credit cards and other payment methods as indicated at the time of payment. All payments are final once processed, subject to our cancellation policy below.</p>
+
+    <h2>8. Cancellation &amp; <em>Refunds</em></h2>
+    <ul>
+      <li><strong>Before quote acceptance:</strong> You may cancel at any time at no cost by informing us via text or the contact form.</li>
+      <li><strong>After quote acceptance but more than 48 hours before check-in:</strong> Full refund minus a 10% service fee to cover sourcing and coordination costs already incurred.</li>
+      <li><strong>Within 48 hours of check-in:</strong> No refund, as purchasing and preparation will have begun or been completed by this time. We may, at our discretion, offer a partial credit for future orders.</li>
+      <li><strong>After delivery:</strong> No refunds. All sales are final once goods have been stocked in the property.</li>
+    </ul>
+    <p>If Nova is unable to fulfill your order for any reason, you will receive a full refund.</p>
+
+    <h2>9. SMS &amp; <em>Communications</em></h2>
+    <p>By providing your phone number and submitting an order, you expressly consent to receive SMS text messages and phone calls from Nova at the number provided. These communications may include:</p>
+    <ul>
+      <li>Your order quote and payment link</li>
+      <li>Order status updates and coordination messages</li>
+      <li>Substitution inquiries</li>
+      <li>Delivery confirmation and photos</li>
+      <li>Follow-up regarding your experience</li>
+    </ul>
+    <p>Message and data rates may apply. Message frequency varies based on your order. You may opt out of non-transactional messages at any time by replying STOP. Opting out of transactional messages related to an active order may prevent us from fulfilling your request.</p>
+    <p>This consent is provided in compliance with the Telephone Consumer Protection Act (TCPA), 47 U.S.C. &sect; 227, and applicable California regulations. Your consent is not a condition of purchase, except as necessary to coordinate and fulfill your specific order.</p>
+
+    <h2>10. Intellectual <em>Property</em></h2>
+    <p>All content on this website — including text, design, code, graphics, logos, and the Nova brand — is the property of Nova Concierge and is protected by applicable intellectual property laws. You may not reproduce, distribute, scrape, crawl, use for AI/machine-learning training, or create derivative works from any content on this website without our prior written consent. You may not use our website or brand for any competitive purpose.</p>
+
+    <h2>11. Limitation of <em>Liability</em></h2>
+    <p>To the fullest extent permitted by California law, Nova's total liability for any claim arising from or related to our services shall not exceed the amount you paid for the specific order giving rise to the claim.</p>
+    <p>Nova shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of enjoyment, inconvenience, or emotional distress, regardless of whether we were advised of the possibility of such damages. <strong>Nothing in these Terms limits or excludes liability for personal injury or death caused by our negligence, or for fraud or fraudulent misrepresentation.</strong></p>
+    <p>Nova is not liable for delays or failures in performance caused by circumstances beyond our reasonable control, including but not limited to natural disasters, pandemics, labor disputes, government orders, supply chain disruptions, retailer stock shortages, third-party supplier failures, or property access issues.</p>
+
+    <h2>12. Indemnification</h2>
+    <p>You agree to indemnify, defend, and hold harmless Nova Concierge, its owners, employees, and agents from and against any claims, liabilities, damages, losses, and expenses (including reasonable attorneys' fees) arising from: (a) your use of our services; (b) your violation of these Terms; (c) inaccurate information you provide; or (d) your violation of any third-party rights.</p>
+
+    <h2>13. Dispute Resolution &amp; <em>Governing Law</em></h2>
+    <p>These Terms are governed by and construed in accordance with the laws of the State of California, without regard to conflict of law principles. Any dispute arising from these Terms or your use of our services shall be resolved as follows:</p>
+    <ul>
+      <li><strong>Informal resolution first:</strong> Before initiating any formal proceeding, you agree to contact us via our <a href="/contact">contact form</a> and attempt to resolve the dispute informally for at least 30 days.</li>
+      <li><strong>Binding arbitration:</strong> If informal resolution fails, any dispute shall be resolved by binding arbitration administered by JAMS in Orange County, California, under its Streamlined Arbitration Rules. The arbitrator's decision shall be final and enforceable in any court of competent jurisdiction.</li>
+      <li><strong>Class action waiver:</strong> You agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated, or representative action.</li>
+    </ul>
+
+    <h2>14. Modifications</h2>
+    <p>We reserve the right to modify these Terms at any time. Changes take effect when posted on this page with an updated "Last updated" date. Your continued use of our services after changes are posted constitutes acceptance of the revised Terms. Material changes will be communicated via the website or through direct notice.</p>
+
+    <h2>15. Severability</h2>
+    <p>If any provision of these Terms is found to be unenforceable or invalid by a court of competent jurisdiction, the remaining provisions shall continue in full force and effect.</p>
+
+    <h2>16. Entire <em>Agreement</em></h2>
+    <p>These Terms, together with our <a href="/privacy">Privacy Policy</a>, constitute the entire agreement between you and Nova Concierge regarding your use of our services and supersede all prior agreements, understandings, and communications.</p>
+
+    <p style="margin-top:48px; color:var(--cream-faint); font-size:14px">Questions about these terms? <a href="/contact">Get in touch</a>.</p>
+  </main>
+
+<script>
+  (function(){
+    const btn=document.getElementById('hbtn'), panel=document.getElementById('hpanel'), overlay=document.getElementById('hoverlay');
+    function toggle(){ btn.classList.toggle('open'); panel.classList.toggle('open'); overlay.classList.toggle('open'); }
+    function close(){ btn.classList.remove('open'); panel.classList.remove('open'); overlay.classList.remove('open'); }
+    btn.addEventListener('click', toggle);
+    overlay.addEventListener('click', close);
+    panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+  })();
+</script>
+</body>
+</html>

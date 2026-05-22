@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(wc -l C:/Users/brady/nova-site/*.html C:/Users/brady/nova-site/_*)",
+      "Bash(npx -y serve . -l 3000)",
+      "Bash(npx -y serve . -p 3000)",
+      "Bash(netstat -ano)",
+      "Bash(mv:*)",
+      "Bash(sed:*)",
+      "Bash(start snippingtool:*)",
+      "WebFetch(domain:ventures.acquisition.com)",
+      "WebFetch(domain:leveled-management.com)",
+      "Bash(npx -y serve --version)",
+      "Bash(taskkill //PID 4212 //F)",
+      "Bash(taskkill //PID 28380 //F)",
+      "Bash(npx -y serve . -l 50931)",
+      "Bash(grep -c 'favicon.svg' *.html)",
+      "Bash(ls:*)",
+      "Bash(npx -y sharp-cli --version)",
+      "Bash(npx -y @aspect-build/sharp-cli -i C:/Users/brady/nova-site/og-image.svg -o C:/Users/brady/nova-site/og-image.png --width 1200 --height 630)",
+      "Bash(npx -y svg2png-cli C:/Users/brady/nova-site/og-image.svg C:/Users/brady/nova-site/og-image.png)",
+      "Bash(node -e ':*)",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)"
+    ]
+  }
+}

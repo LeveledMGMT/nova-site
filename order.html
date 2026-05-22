@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nova — Start your experience</title>
+<meta name="description" content="Tell us anything you want — down to the brand and the bottle — and it'll be unpacked, chilled, and waiting before you walk in.">
+<meta property="og:title" content="Nova — Start your experience">
+<meta property="og:description" content="Tell us anything you want — down to the brand and the bottle — and it'll be unpacked, chilled, and waiting before you walk in.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nova Concierge">
+<meta property="og:image" content="/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/og-image.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..600&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#e9c98a; --gold-hi:#fff3d6; --gold-deep:#b78a3f;
+    --cream:#efeaf2; --cream-dim:#c2bcd4; --cream-faint:#857f96;
+    --warn:#ffb4a0;
+    --line:rgba(233,201,138,.22);
+    --bg-a:#1c1f42; --bg-b:#0c0d22; --bg-c:#060611;
+    --glow:rgba(233,201,138,.12);
+    --card:rgba(255,255,255,.035);
+    --card-line:rgba(243,236,221,.10);
+    --display:"Fraunces",Georgia,serif;
+    --ui:"Hanken Grotesk",-apple-system,sans-serif;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth; scrollbar-width:none}
+  html::-webkit-scrollbar{display:none}
+  body{font-family:var(--ui); color:var(--cream); background:var(--bg-c); -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.5}
+  ::selection{background:var(--gold); color:#2a1c06}
+
+  /* atmosphere — same DNA, now scroll-driven */
+  #atmos{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(125% 95% at 50% var(--glow-y,4%), var(--bg-a) 0%, var(--bg-b) 52%, var(--bg-c) 100%);
+    transition:background 1.4s var(--ease)}
+  #atmos::after{content:""; position:absolute; inset:0;
+    background:radial-gradient(60% 50% at 50% 8%, var(--glow) 0%, transparent 70%);
+    transition:background 1.4s var(--ease)}
+  #grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  #spot{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0; transition:opacity .6s; background:radial-gradient(220px 220px at var(--mx,50%) var(--my,50%), rgba(255,243,214,.06), transparent 70%)}
+  .motes{position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden}
+  .mote{position:absolute; bottom:-10px; width:3px; height:3px; border-radius:50%; background:var(--gold-hi); opacity:0; filter:blur(.4px); animation:rise linear infinite}
+  @keyframes rise{0%{transform:translateY(0) translateX(0); opacity:0}12%{opacity:.5}88%{opacity:.35}100%{transform:translateY(-105vh) translateX(var(--drift,12px)); opacity:0}}
+
+  /* depth rail */
+  #rail{position:fixed; left:0; top:0; bottom:0; width:88px; z-index:5;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+    border-right:1px solid var(--line); background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.30));
+    backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px)}
+  #rail .mark{font-family:var(--display); font-weight:600; letter-spacing:.4em; font-size:12px;
+    color:var(--cream); text-transform:uppercase; position:absolute; top:26px; left:50%;
+    transform:translateX(-50%); text-decoration:none; transition:color .25s}
+  #rail .mark:hover{color:var(--gold-hi)}
+  #rail .mark .dot{color:var(--gold)}
+  #rail .cap{font-size:9.5px; letter-spacing:.32em; color:var(--cream-faint); text-transform:uppercase}
+  #fathom{font-family:var(--display); font-weight:600; font-size:40px; line-height:.9; color:var(--gold-hi);
+    font-variant-numeric:tabular-nums; transition:color .6s}
+  #track{width:6px; flex:0 0 38vh; max-height:340px; border-radius:6px; background:rgba(243,236,221,.10); position:relative; overflow:hidden}
+  #fill{position:absolute; left:0; right:0; bottom:0; height:0%;
+    background:linear-gradient(180deg,var(--gold-hi),var(--gold-deep));
+    transition:height .35s var(--ease); box-shadow:0 0 18px rgba(233,201,138,.5)}
+  #rail .pct{font-size:11px; letter-spacing:.12em; color:var(--cream-dim); font-variant-numeric:tabular-nums}
+  #rail .stk{font-size:9px; letter-spacing:.26em; color:var(--cream-faint); text-transform:uppercase; writing-mode:vertical-rl; transform:rotate(180deg); margin-top:2px}
+  /* tick marks per depth */
+  #ticks{position:absolute; inset:0; pointer-events:none}
+  #ticks i{position:absolute; left:-4px; right:-4px; height:1px; background:rgba(243,236,221,.18)}
+  #ticks i.on{background:var(--gold)}
+
+  /* scroll progress hairline at top */
+  #hair{position:fixed; top:0; left:88px; right:0; height:2px; z-index:6; background:rgba(255,255,255,.04)}
+  #hair i{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi));
+    transition:width .15s linear; box-shadow:0 0 14px rgba(233,201,138,.5)}
+
+  /* stage / sections */
+  #stage{position:relative; z-index:3; padding-left:88px}
+  .screen{min-height:100vh; width:100%; padding:120px 5vw 100px; display:flex; align-items:center; justify-content:center;
+    position:relative}
+  .screen > .inner{width:100%; max-width:880px}
+  .screen.compact{min-height:auto; padding:60px 5vw 80px}
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity 1s var(--ease), transform 1s var(--ease)}
+  .reveal.in{opacity:1; transform:none}
+
+  /* anchor for fluid section transitions — soft separator */
+  .screen + .screen::before{content:""; display:block; position:absolute; left:5vw; right:5vw; top:0;
+    height:1px; background:linear-gradient(90deg,transparent,var(--card-line) 30%,var(--card-line) 70%,transparent)}
+
+  .kicker{font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--gold);
+    display:flex; align-items:center; gap:12px; margin-bottom:22px}
+  .kicker::before{content:""; width:34px; height:1px; background:var(--gold)}
+  .step-tag{font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold)}
+  h1{font-family:var(--display); font-weight:300; font-optical-sizing:auto; line-height:1.02;
+    font-size:clamp(46px,8.5vw,104px); letter-spacing:-.02em}
+  h1 em{font-style:italic; color:var(--gold-hi)}
+  h2{font-family:var(--display); font-weight:340; font-size:clamp(30px,5.4vw,56px); line-height:1.05; letter-spacing:-.015em}
+  h2 em{font-style:italic; color:var(--gold-hi)}
+  .lede{font-size:clamp(15px,2vw,19px); color:var(--cream-dim); max-width:50ch; line-height:1.6; margin-top:20px; font-weight:300}
+  .whisper{font-family:var(--display); font-style:italic; font-size:15px; color:var(--cream-faint); margin-top:8px}
+
+  .row{display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:38px}
+  .btn{font-family:var(--ui); font-weight:600; font-size:15px; letter-spacing:.02em; cursor:pointer; border:none; border-radius:100px;
+    padding:17px 30px; transition:transform .35s var(--ease), box-shadow .35s, background .3s; position:relative;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px}
+  .btn.primary{background:linear-gradient(180deg,var(--gold-hi),var(--gold)); color:#2a1c06;
+    box-shadow:0 14px 40px -12px rgba(233,201,138,.7)}
+  .btn.primary:hover{transform:translateY(-3px); box-shadow:0 22px 54px -12px rgba(233,201,138,.85)}
+  .btn.ghost{background:transparent; color:var(--cream-dim); border:1px solid var(--card-line); padding:16px 26px}
+  .btn.ghost:hover{color:var(--cream); border-color:var(--gold); transform:translateY(-2px)}
+  .btn.link{background:none; padding:10px 2px; color:var(--cream-faint); font-weight:500; text-decoration:underline; text-underline-offset:5px; text-decoration-color:var(--line)}
+  .btn.link:hover{color:var(--gold-hi)}
+
+  .field{margin-top:30px}
+  .flabel{font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--cream-faint); margin-bottom:14px}
+
+  .sug-toggle{background:none; border:1px solid rgba(233,201,138,.15); color:var(--cream-dim); font-family:var(--ui);
+    font-size:13px; font-weight:500; letter-spacing:.08em; padding:10px 20px; border-radius:100px; cursor:pointer;
+    margin-top:24px; transition:all .3s var(--ease)}
+  .sug-toggle:hover{border-color:var(--gold); color:var(--gold-hi)}
+  .sug-toggle.open{border-color:var(--gold); color:var(--gold-hi)}
+  .sugs{display:flex; flex-wrap:wrap; gap:9px; margin-top:14px}
+  .sug{font-family:var(--ui); font-size:13.5px; cursor:pointer; padding:9px 16px; border-radius:100px; border:1px dashed var(--card-line); background:transparent; color:var(--cream-dim); transition:.25s}
+  .sug:hover{border-style:solid; border-color:var(--gold); color:var(--gold-hi); transform:translateY(-2px)}
+
+  .addpanel{margin-top:16px; border:1px solid var(--card-line); background:rgba(255,255,255,.04); border-radius:20px; padding:22px}
+  .addgrid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .fld{display:flex; flex-direction:column; gap:7px}
+  .fld.full{grid-column:1/-1}
+  .fld label{font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--cream-faint)}
+  .fld input,.fld select{background:rgba(0,0,0,.3); border:1px solid var(--card-line); color:var(--cream); border-radius:12px; padding:14px 15px; font-family:var(--ui); font-size:15px; transition:.25s; width:100%}
+  .fld input::placeholder{color:var(--cream-faint)}
+  .fld input:focus,.fld select:focus{outline:none; border-color:var(--gold); background:rgba(0,0,0,.45)}
+  .fld input:disabled{opacity:.4}
+  .fld select{cursor:pointer; appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23c2bcd4' stroke-width='1.6'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 16px center}
+  .mini{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--cream-dim); margin-top:2px; cursor:pointer}
+  .mini input{accent-color:var(--gold); width:15px; height:15px}
+  .stepper{display:flex; align-items:center; border:1px solid var(--card-line); border-radius:12px; overflow:hidden; width:fit-content; background:rgba(0,0,0,.3)}
+  .stepper button{width:46px; height:50px; border:none; background:transparent; color:var(--gold-hi); font-size:21px; cursor:pointer; transition:.2s}
+  .stepper button:hover{background:rgba(233,201,138,.18)}
+  .stepper input{width:56px; height:50px; border:none; background:transparent; color:var(--cream); text-align:center; font-family:var(--ui); font-size:16px; font-variant-numeric:tabular-nums}
+  .stepper input:focus{outline:none}
+  .addhint{color:var(--warn); font-size:13.5px; margin-top:14px; min-height:0}
+  .addpanel .btn.add{margin-top:14px; width:100%; background:rgba(233,201,138,.16); color:var(--gold-hi); border:1px solid var(--gold)}
+  .addpanel .btn.add:hover{background:rgba(233,201,138,.28); transform:translateY(-2px)}
+
+  .lines{margin-top:18px; display:flex; flex-direction:column; gap:10px}
+  .empty-lines{color:var(--cream-faint); font-family:var(--display); font-style:italic; font-size:15px; padding:4px 2px}
+  .line{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px 16px; border-radius:14px;
+    background:linear-gradient(165deg,rgba(233,201,138,.16),rgba(233,201,138,.04));
+    box-shadow:0 0 0 1px var(--gold) inset; animation:pop .4s var(--ease)}
+  @keyframes pop{30%{transform:scale(1.02)}100%{transform:none}}
+  .line-l{display:flex; align-items:center; gap:14px}
+  .qty{font-family:var(--display); font-weight:600; font-size:17px; color:var(--gold-hi); min-width:32px; text-align:center; font-variant-numeric:tabular-nums}
+  .line-item{font-family:var(--display); font-weight:500; font-size:18px; color:var(--gold-hi); line-height:1.15}
+  .line-sub{font-size:13px; color:var(--cream-dim); margin-top:3px}
+  .line button{flex:0 0 auto; width:28px; height:28px; border-radius:50%; border:none; cursor:pointer; background:rgba(0,0,0,.3); color:var(--gold-hi); font-size:17px; line-height:1; display:grid; place-items:center; transition:.25s}
+  .line button:hover{background:var(--gold); color:#2a1c06}
+
+  .nudge{font-family:var(--display); font-style:italic; font-size:clamp(16px,2.4vw,22px); color:var(--cream-dim); margin-top:40px; line-height:1.5; max-width:42ch}
+  .nudge b{color:var(--gold-hi); font-weight:600; font-style:normal}
+
+  .form{display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; margin-top:30px; max-width:640px}
+  .form .full{grid-column:1/-1}
+  .inp{display:flex; flex-direction:column; gap:8px}
+  .inp label{font-size:11px; letter-spacing:.26em; text-transform:uppercase; color:var(--cream-faint)}
+  .inp input,.inp textarea{background:rgba(0,0,0,.25); border:1px solid var(--card-line); color:var(--cream); border-radius:12px; padding:15px 16px; font-family:var(--ui); font-size:16px; resize:none}
+  .inp input:disabled{opacity:.4}
+  .inp input:focus,.inp textarea:focus{outline:none; border-color:var(--gold); background:rgba(0,0,0,.4)}
+
+  .recap{margin-top:24px; border:1px solid var(--card-line); border-radius:18px; padding:8px 24px; background:rgba(0,0,0,.2); max-width:640px}
+  .recap .r{display:flex; justify-content:space-between; gap:18px; padding:14px 0; border-bottom:1px solid var(--card-line)}
+  .recap .r:last-child{border-bottom:none}
+  .recap .r .k{color:var(--cream-faint); font-size:12px; letter-spacing:.16em; text-transform:uppercase; flex:0 0 auto; padding-top:3px}
+  .recap .r .v{color:var(--cream); text-align:right; font-family:var(--display); font-size:16px; line-height:1.35}
+  .recap .empty{padding:18px 0; color:var(--cream-faint); font-style:italic; font-family:var(--display)}
+  .gtk{margin-top:14px; font-size:13.5px; color:var(--cream-dim); display:flex; flex-wrap:wrap; gap:6px 22px; max-width:640px}
+  .gtk b{color:var(--cream); font-weight:600}
+
+  .seg{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+  .segopt{cursor:pointer; padding:14px 24px; border-radius:12px; border:1px solid rgba(233,201,138,.15); background:rgba(255,255,255,.03); color:var(--cream-dim); font-size:14px; font-weight:400; transition:all .3s var(--ease); letter-spacing:.01em}
+  .segopt:hover{border-color:var(--gold); color:var(--cream); background:rgba(233,201,138,.06)}
+  .segopt.sel{background:rgba(233,201,138,.12); color:var(--gold-hi); border-color:var(--gold); font-weight:500}
+
+  .confirm{display:flex; gap:12px; align-items:flex-start; margin-top:24px; max-width:640px; padding:0; border:none; border-radius:0; background:none; cursor:pointer}
+  .confirm input{accent-color:var(--gold); width:16px; height:16px; margin-top:3px; flex:0 0 auto; cursor:pointer}
+  .confirm span{font-size:12px; color:var(--cream-faint); line-height:1.6}
+  .confirm b{color:var(--cream-dim); font-weight:500}
+
+  .seal{width:74px; height:74px; border-radius:50%; border:1px solid var(--gold); display:grid; place-items:center; margin-bottom:30px; animation:pulse 2.6s ease-in-out infinite}
+  .seal svg{width:30px; height:30px; stroke:var(--gold-hi)}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(233,201,138,.4)}50%{box-shadow:0 0 0 16px rgba(233,201,138,0)}}
+  .addr-or-code{display:grid; grid-template-columns:1fr auto 1fr; gap:18px; align-items:end; grid-column:1/-1}
+  .addr-or-code .or-text{padding-bottom:14px}
+  .or-text{font-family:var(--display); font-style:italic; font-size:14px; color:var(--cream-faint)}
+
+  .code-msg{font-family:var(--display); font-style:italic; font-size:14px; color:var(--gold-hi); margin-top:-4px; padding:10px 0; min-height:0; transition:opacity .3s var(--ease)}
+  .code-msg:empty{display:none}
+
+  .coming-soon{margin-top:32px; display:flex; align-items:center; gap:14px}
+  .cs-loader{display:flex; gap:6px}
+  .cs-loader span{width:5px; height:5px; border-radius:50%; background:var(--gold); opacity:.3; animation:csping 1.4s ease-in-out infinite}
+  .cs-loader span:nth-child(2){animation-delay:.2s}
+  .cs-loader span:nth-child(3){animation-delay:.4s}
+  @keyframes csping{0%,80%,100%{opacity:.3; transform:scale(1)}40%{opacity:1; transform:scale(1.3)}}
+  .cs-text{font-family:var(--display); font-style:italic; font-size:15px; color:var(--cream-faint); letter-spacing:.02em}
+
+  .footnote{font-size:12.5px; color:var(--cream-faint); margin-top:24px; letter-spacing:.04em}
+
+  /* gating — sections below setup are hidden until allergies + sub rule are set */
+  body.setup-locked #depths,
+  body.setup-locked #sec-checkout,
+  body.setup-locked #sec-done{display:none}
+  body.setup-locked #sec-setup{padding-bottom:140px}
+  .gate-hint{margin-top:34px; display:flex; align-items:center; gap:14px; color:var(--cream-faint);
+    font-family:var(--ui); font-size:12.5px; letter-spacing:.18em; text-transform:uppercase; opacity:0; transition:opacity .4s var(--ease)}
+  body.setup-locked .gate-hint{opacity:1}
+  .gate-hint .lock{width:22px; height:22px; border-radius:50%; border:1px solid var(--card-line); display:grid; place-items:center}
+  .gate-hint .lock svg{width:10px; height:10px; stroke:var(--cream-faint); fill:none; stroke-width:1.6}
+  body.setup-locked .btn.gated{opacity:.4; pointer-events:none}
+  body.setup-locked #sec-setup .cue{opacity:.35; pointer-events:none}
+
+  /* small scroll cue between sections */
+  .cue{position:absolute; left:50%; bottom:32px; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--cream-faint);
+    font-family:var(--ui); font-size:10.5px; letter-spacing:.32em; text-transform:uppercase;
+    animation:bob 2.4s ease-in-out infinite; cursor:pointer; text-decoration:none}
+  .cue::after{content:""; width:1px; height:36px; background:linear-gradient(180deg,var(--gold),transparent)}
+  .cue:hover{color:var(--gold-hi)}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)}}
+
+  /* done section — full bleed celebratory */
+  #sec-done{display:none}
+  #sec-done.show{display:flex; animation:fadeUp .8s var(--ease)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+  /* luxe hamburger */
+  .hbtn{position:fixed; top:24px; right:28px; z-index:12; width:48px; height:48px; border:none;
+    background:rgba(255,255,255,.06); border-radius:14px; cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px; transition:all .3s var(--ease);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(233,201,138,.08); box-shadow:0 4px 24px -8px rgba(0,0,0,.3)}
+  .hbtn:hover{background:rgba(233,201,138,.10); border-color:rgba(233,201,138,.22);
+    box-shadow:0 4px 32px -8px rgba(233,201,138,.18)}
+  .hbtn span{display:block; width:20px; height:1.5px; background:var(--gold); border-radius:2px;
+    transition:all .35s var(--ease); transform-origin:center}
+  .hbtn.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .hbtn.open span:nth-child(2){opacity:0; transform:scaleX(0)}
+  .hbtn.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+  .hpanel{position:fixed; top:0; right:0; z-index:11; width:320px; height:100vh;
+    background:rgba(6,6,17,.88); border-left:1px solid var(--card-line);
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+    transform:translateX(100%); transition:transform .45s var(--ease);
+    display:flex; flex-direction:column; padding:100px 36px 48px}
+  .hpanel::before{content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.5}
+  .hpanel.open{transform:none}
+  .hpanel a{display:block; padding:18px 0; color:var(--cream-dim); text-decoration:none;
+    font-family:var(--display); font-weight:400; font-size:22px; letter-spacing:.02em;
+    border-bottom:1px solid rgba(243,236,221,.06); transition:color .25s, padding-left .3s var(--ease)}
+  .hpanel a:hover{color:var(--gold-hi); padding-left:8px}
+  .hpanel a:first-child{border-top:1px solid rgba(243,236,221,.06)}
+  .hpanel .hfoot{margin-top:24px; font-family:var(--display); font-weight:600; font-size:16px;
+    letter-spacing:.4em; text-transform:uppercase; color:rgba(239,234,242,.12)}
+  .hpanel .hfoot .dot{color:rgba(233,201,138,.25)}
+  .hpanel .hcta{margin-top:auto; text-align:center; font-family:var(--ui); font-weight:600; font-size:15px;
+    background:linear-gradient(180deg,var(--gold-hi),var(--gold)); color:#2a1c06; border-radius:100px;
+    padding:16px 28px; border:none; letter-spacing:.02em;
+    box-shadow:0 12px 36px -10px rgba(233,201,138,.5);
+    transition:transform .35s var(--ease), box-shadow .35s}
+  .hpanel .hcta:hover{color:#2a1c06; padding-left:0; transform:translateY(-2px);
+    box-shadow:0 18px 44px -10px rgba(233,201,138,.7)}
+  .hoverlay{position:fixed; inset:0; z-index:10; background:rgba(0,0,0,.4); opacity:0; pointer-events:none;
+    transition:opacity .35s; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px)}
+  .hoverlay.open{opacity:1; pointer-events:auto}
+
+  @media (max-width:720px){
+    #rail{flex-direction:row; width:auto; right:0; bottom:auto; height:54px; top:0; gap:14px; justify-content:space-between; padding:0 16px; border-right:none; border-bottom:1px solid var(--line)}
+    #rail .cap,#rail .stk,#ticks{display:none}
+    #rail .mark{position:static; transform:none; font-size:11px; letter-spacing:.38em; order:-1}
+    #fathom{font-size:22px} #track{flex:1; height:5px; width:auto; max-height:none}
+    #fill{height:100%!important; width:var(--w,0%); top:0; bottom:0; right:auto; background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi)); transition:width .35s var(--ease)}
+    #hair{left:0; top:54px}
+    #stage{padding-left:0}
+    .screen{padding:80px 22px 80px}
+    .form,.addgrid{grid-template-columns:1fr}
+    .cue{display:none}
+    .hbtn{top:14px; right:16px; width:44px; height:44px}
+    .hpanel{width:280px; padding:90px 28px 40px}
+  }
+  .mob #fill{width:var(--w,0%)}
+</style>
+</head>
+<body data-screen="hook" style="--glow-y:4%">
+  <div id="atmos"></div>
+  <div class="motes" id="motes"></div>
+  <div id="spot"></div>
+  <div id="grain"></div>
+  <button class="hbtn" id="hbtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="hoverlay" id="hoverlay"></div>
+  <nav class="hpanel" id="hpanel">
+    <a href="/">Home</a>
+    <a href="/story">The Story</a>
+    <a href="/faq">Partners FAQ</a>
+    <a href="/field-notes">Field Notes</a>
+    <a href="/contact">Contact</a>
+    <a href="/order" class="hcta">Start Your Experience</a>
+    <div class="hfoot">Nova<span class="dot">.</span></div>
+  </nav>
+  <div id="hair"><i></i></div>
+
+  <aside id="rail">
+    <a class="mark" href="/">Nova<span class="dot">.</span></a>
+    <div class="cap">Depth</div>
+    <div id="fathom">0</div>
+    <div id="track"><div id="ticks"></div><div id="fill"></div></div>
+    <div class="pct" id="pct">0%</div>
+    <div class="stk">Stocked</div>
+  </aside>
+
+  <main id="stage">
+
+    <section id="sec-hook" class="screen" data-screen="hook" data-fathom="0">
+      <div class="inner reveal">
+        <div class="kicker">Concierge provisioning</div>
+        <h1>Arrive to a home<br>that's <em>already yours.</em></h1>
+        <div class="row">
+          <a class="btn primary" href="#sec-setup">Start your experience ↓</a>
+        </div>
+        <p class="whisper" style="margin-top:24px">Have your place stocked and ready before you even arrive. Build your custom order and we'll send a quote within 24 hours.</p>
+      </div>
+      <a class="cue" href="#sec-setup">Scroll</a>
+    </section>
+
+    <section id="sec-setup" class="screen" data-screen="setup" data-fathom="0">
+      <div class="inner reveal">
+        <div class="kicker"><span class="step-tag">Before we dive</span></div>
+        <h2>Two things that shape <em>every order.</em></h2>
+        <p class="lede">Set these once, then you build your list exactly the way you want it.</p>
+        <div class="field">
+          <div class="flabel">Allergies or hard avoids <span style="color:var(--gold)">— required</span></div>
+          <div class="inp" style="max-width:560px">
+            <input id="allergies-input" data-f="allergies" placeholder="e.g. peanuts, shellfish, dairy"
+              style="background:rgba(0,0,0,.25);border:1px solid var(--card-line);color:var(--cream);border-radius:12px;padding:15px 16px;font-family:var(--ui);font-size:16px">
+          </div>
+          <label class="mini"><input type="checkbox" data-bool="allergyNone"> No allergies — none in our group</label>
+        </div>
+        <div class="field">
+          <div class="flabel">If we can't find an exact item, by default</div>
+          <div class="seg" data-seg="sub">
+            <button class="segopt" data-v="closest">Get the closest thing</button>
+            <button class="segopt" data-v="skip">Skip it</button>
+            <button class="segopt" data-v="ask">Text me first</button>
+          </div>
+          <p class="whisper" style="margin-top:12px">You can override this on any single item as you go.</p>
+        </div>
+        <div class="gate-hint">
+          <span class="lock"><svg viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="6.5" rx="1"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg></span>
+          <span>Set both fields above to descend</span>
+        </div>
+      </div>
+      <a class="cue" href="#sec-d1">I · Morning</a>
+    </section>
+
+    <!-- Depth sections rendered programmatically into #depths -->
+    <div id="depths"></div>
+
+    <section id="sec-checkout" class="screen" data-screen="checkout" data-fathom="5">
+      <div class="inner reveal">
+        <div class="kicker"><span class="step-tag">The ascent</span></div>
+        <h2>Here's what we'll have <em>waiting.</em></h2>
+        <p class="lede">This is your order, in your words. Send it and we'll text back one all-in price — usually within 24 hours. Pay the link, and it's handled.</p>
+        <div class="recap" id="recap"></div>
+        <div class="gtk" id="gtk"></div>
+
+        <div class="form">
+          <div class="inp"><label>Your name</label><input data-f="name" placeholder="First & last"></div>
+          <div class="inp"><label>Mobile (we text the quote)</label><input data-f="phone" placeholder="(   )   -    "></div>
+          <div class="addr-or-code full">
+            <div class="inp"><label>Delivery address</label><input data-f="prop" id="addr-input" placeholder="Full address of the rental"></div>
+            <span class="or-text">or</span>
+            <div class="inp"><label>Partner code</label><input data-f="code" id="code-input" placeholder="From your host"></div>
+          </div>
+          <div class="code-msg full" id="code-msg"></div>
+          <div class="inp"><label>Check-in date</label><input type="date" data-f="dates" style="color-scheme:dark"></div>
+          <div class="inp"><label>Check-in time</label>
+            <select data-f="checkinTime" style="background:rgba(0,0,0,.25); border:1px solid var(--card-line); color:var(--cream); border-radius:12px; padding:15px 16px; font-family:var(--ui); font-size:16px; appearance:none; cursor:pointer; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23c2bcd4' stroke-width='1.6'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E&quot;); background-repeat:no-repeat; background-position:right 16px center; width:100%">
+              <option value="" disabled selected>Select time</option>
+              <option value="8:00 AM">8:00 AM</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+              <option value="3:00 PM">3:00 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:00 PM">5:00 PM</option>
+              <option value="6:00 PM">6:00 PM</option>
+              <option value="7:00 PM">7:00 PM</option>
+              <option value="8:00 PM">8:00 PM</option>
+              <option value="9:00 PM">9:00 PM</option>
+              <option value="10:00 PM">10:00 PM</option>
+            </select>
+          </div>
+          <div class="inp full"><label>Anything else we should know</label><textarea data-f="extra" rows="2" placeholder="A surprise, special timing, where to leave things — anything."></textarea></div>
+        </div>
+
+        <label class="confirm">
+          <input type="checkbox" data-bool="confirm">
+          <span><b>This is my complete order.</b> I understand Nova will provide exactly what is listed above. Items not listed will not be included. By submitting, I consent to Nova contacting me via SMS and phone at the number provided to coordinate this order, send my quote, and follow up on my request. Message and data rates may apply. I have read and agree to the <a href="/terms" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Terms of Service</a> and <a href="/privacy" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">Privacy Policy</a>.</span>
+        </label>
+
+        <div class="row" style="justify-content:space-between; align-items:center">
+          <button class="btn primary" id="submit-btn">Send my request &rarr;</button>
+          <a href="#sec-d5" style="font-size:13px; color:var(--cream-faint); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--line); transition:.25s; font-weight:400">Add more items</a>
+        </div>
+        <p class="footnote">No payment now. We confirm the all-in price before a cent moves.</p>
+      </div>
+    </section>
+
+    <section id="sec-done" class="screen" data-screen="done" data-fathom="5">
+      <div class="inner">
+        <div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="kicker"><span class="step-tag">Welcome home</span></div>
+        <h2>It's <em>handled.</em></h2>
+        <p class="lede" id="done-lede"></p>
+        <p class="whisper" style="margin-top:18px">We'll send a photo of the loaded fridge before you arrive. That part never gets old.</p>
+        <div class="row"><button class="btn ghost" id="restart-btn">Start another home</button></div>
+      </div>
+    </section>
+
+  </main>
+
+<script>
+const DEPTHS = [
+  { id:"d1", step:"Depth I", title:"The <em>morning</em>",
+    sub:"The first things you'll reach for. Tap a starter, then make it exact — the brand and amount are up to you.",
+    sugs:["Whole milk","Eggs","Bacon","Bagels","Orange juice","Butter","Greek yogurt","Bananas"],
+    nudge:"This is where most people stop. <b>The ones who really arrive keep going.</b>" },
+  { id:"d2", step:"Depth II", title:"Through the <em>day</em>",
+    sub:"Snacks, drinks, lunch — the stuff that means nobody makes a store run.",
+    sugs:["Sparkling water","LaCroix","Tortilla chips","Hummus","Granola bars","String cheese","Deli turkey","Sourdough","Juice boxes"],
+    nudge:"Most homes feel ready about now. <b>Yours could feel like a private resort.</b>" },
+  { id:"d3", step:"Depth III", title:"The <em>table</em>",
+    sub:"Real meals, ready to cook. Spell out cuts and quantities exactly as you want them.",
+    sugs:["Ribeye steaks","Chicken breasts","Salmon fillets","Spaghetti","Marinara","Caesar salad kit","Olive oil","Ground beef","Tortillas"],
+    nudge:"" },
+  { id:"d4", step:"Depth IV", title:"<em>Anything.</em>",
+    sub:"This is the whole idea. If you can name it, it'll be there. Be as specific as you like.",
+    sugs:["Fresh flowers","Birthday cake","Charcuterie board","Candles","Baby supplies","Pet food","Specific vitamins","Gift basket","Balloons"],
+    nudge:"" },
+  { id:"d5", step:"Depth V", title:"The <em>bar</em>",
+    sub:"",
+    sugs:[],
+    nudge:"", comingSoon:true }
+];
+const PH = { d1:"e.g. Whole milk", d2:"e.g. Sparkling water", d3:"e.g. Ribeye steaks", d4:"e.g. Fresh flowers", d5:"e.g. Tequila" };
+const SUBS = { default:"Use my default rule", closest:"Get the closest thing", skip:"Skip it", ask:"Text me first" };
+const SUBLINE = { closest:"sub: closest", skip:"skip if out", ask:"ask me if out" };
+const ATMOS = {
+  hook:    ["#1c1f42","#0c0d22","#060611","4%","rgba(233,201,138,.13)"],
+  setup:   ["#22214a","#0e0e26","#070612","2%","rgba(233,201,138,.13)"],
+  d1:      ["#262352","#100f2a","#070612","0%","rgba(233,201,138,.13)"],
+  d2:      ["#2f2660","#13102f","#08071a","3%","rgba(233,201,138,.14)"],
+  d3:      ["#3a2566","#170f30","#0a0820","7%","rgba(233,201,138,.15)"],
+  d4:      ["#45225e","#1a0e2c","#0c0820","12%","rgba(233,201,138,.16)"],
+  d5:      ["#5a2e1a","#1f0f08","#0b0504","28%","rgba(255,205,130,.22)"],
+  checkout:["#272a55","#101230","#070815","2%","rgba(233,201,138,.13)"],
+  done:    ["#2a2a58","#111233","#070716","0%","rgba(233,201,138,.13)"]
+};
+
+const S = { allergies:"", allergyNone:false, sub:null, items:{}, name:"", phone:"", prop:"", code:"", dates:"", checkinTime:"", extra:"", confirm:false };
+
+function esc(s){ return (s+"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function itemCount(){ return Object.values(S.items).reduce((a,b)=>a+b.length,0); }
+const isMob = () => window.matchMedia("(max-width:720px)").matches;
+
+/* ── Build depth sections once ────────────────────────────────────── */
+function depthHTML(d, idx){
+  const last = idx === DEPTHS.length - 1;
+  const nextId = last ? 'sec-checkout' : 'sec-' + DEPTHS[idx+1].id;
+  const nextLbl = last ? 'Review & send' : `${DEPTHS[idx+1].step} \u00b7 ${DEPTHS[idx+1].title.replace(/<[^>]+>/g,'')}`;
+  return `
+  <section id="sec-${d.id}" class="screen${d.comingSoon?' compact':''}" data-screen="${d.id}" data-fathom="${idx+1}">
+    <div class="inner reveal">
+      <div class="kicker"><span class="step-tag">${d.step}</span></div>
+      <h2>${d.title}</h2>
+      ${d.comingSoon ? `
+      <div class="coming-soon">
+        <div class="cs-loader"><span></span><span></span><span></span></div>
+        <div class="cs-text">Coming soon</div>
+      </div>
+      <p class="lede" style="margin-top:16px">We are currently unable to source alcohol.</p>
+    </div>` : `
+      <p class="lede">${d.sub}</p>
+      <button class="sug-toggle" data-toggle="sugs-${d.id}">See suggestions</button>
+      <div class="sugs" id="sugs-${d.id}" style="display:none">${d.sugs.map(s=>`<button class="sug" data-sug="${esc(s)}">+ ${esc(s)}</button>`).join("")}</div>
+      <div class="addpanel" id="add-${d.id}">
+        <div class="addgrid">
+          <div class="fld full"><label>Item</label><input data-fld="item" placeholder="${PH[d.id]}"></div>
+          <div class="fld"><label>Brand / preference</label><input data-fld="brand" placeholder="e.g. a brand you like">
+            <label class="mini"><input type="checkbox" data-fld="brandAny"> No preference \u2014 your pick</label></div>
+          <div class="fld"><label>Quantity</label>
+            <div class="stepper"><button type="button" data-step="-">\u2212</button><input data-fld="qty" value="1" inputmode="numeric"><button type="button" data-step="+">+</button></div></div>
+          <div class="fld"><label>Size</label><input data-fld="size" placeholder="e.g. 1 gallon, 12 oz, 750ml"></div>
+          <div class="fld"><label>If it's unavailable</label>
+            <select data-fld="sub">${Object.keys(SUBS).map(k=>`<option value="${k}">${SUBS[k]}</option>`).join("")}</select></div>
+          <div class="fld full"><label>Notes \u2014 optional</label><input data-fld="note" placeholder="organic? ripe? a specific request?"></div>
+        </div>
+        <div class="addhint" id="hint-${d.id}"></div>
+        <button class="btn add" data-additem="${d.id}">Add to my order</button>
+      </div>
+      <div class="lines" id="lines-${d.id}"></div>
+    </div>
+    <a class="cue" href="#${nextId}">${nextLbl}</a>`}
+  </section>`;
+}
+
+document.getElementById('depths').innerHTML = DEPTHS.map((d,i)=>depthHTML(d,i)).join('');
+
+/* ── Lines, recap, items ──────────────────────────────────────────── */
+function lineMeta(o){
+  const parts=[ o.brandAny ? "any brand" : o.brand ];
+  if(o.size) parts.push(o.size);
+  if(o.sub && o.sub!=="default") parts.push(SUBLINE[o.sub]);
+  if(o.note) parts.push(o.note);
+  return parts.filter(Boolean).join(" \u00b7 ");
+}
+function linesHTML(id){
+  const arr=S.items[id]||[];
+  if(!arr.length) return '<div class="empty-lines">Nothing added yet \u2014 tap a suggestion or fill in the form above.</div>';
+  return arr.map((o,i)=>{
+    const m=lineMeta(o);
+    return `<div class="line"><div class="line-l"><span class="qty">${o.qty}\u00d7</span><div><div class="line-item">${esc(o.item)}</div>${m?`<div class="line-sub">${esc(m)}</div>`:""}</div></div><button data-del="${id}:${i}" aria-label="remove">\u00d7</button></div>`;
+  }).join("");
+}
+function renderLines(id){
+  const box=document.getElementById('lines-'+id); if(!box) return;
+  box.innerHTML=linesHTML(id);
+  box.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{
+    const p=b.dataset.del.split(':'); S.items[p[0]].splice(+p[1],1); renderLines(p[0]); refreshRecap(); refreshFill();
+  }));
+}
+DEPTHS.forEach(d=>renderLines(d.id));
+
+function pickList(){
+  const out=[];
+  DEPTHS.forEach(d=>{ const dl=d.step.replace(/\u2014.*/,'').trim(); (S.items[d.id]||[]).forEach(o=> out.push({depth:dl, nm:o.item, qty:o.qty, meta:lineMeta(o)})); });
+  return out;
+}
+function refreshRecap(){
+  const chosen=pickList();
+  const r=document.getElementById('recap');
+  r.innerHTML = chosen.length
+    ? chosen.map(c=>`<div class="r"><span class="k">${c.depth}</span><span class="v">${c.qty}\u00d7 ${esc(c.nm)}${c.meta?` <span style="color:var(--cream-faint);font-size:13px">\u2014 ${esc(c.meta)}</span>`:""}</span></div>`).join("")
+    : `<div class="empty">Nothing added yet \u2014 scroll back and build your list.</div>`;
+  const allergyText = S.allergyNone ? "None noted" : (S.allergies.trim() || "\u2014");
+  document.getElementById('gtk').innerHTML =
+    `<span>Allergies / avoids: <b>${esc(allergyText)}</b></span><span>If an item's out: <b>${esc(S.sub?SUBS[S.sub]:'\u2014')}</b></span>`;
+  refreshGate();
+}
+refreshRecap();
+
+function addItem(id){
+  const p=document.getElementById('add-'+id); if(!p) return;
+  const g=k=>p.querySelector('[data-fld="'+k+'"]'); const hint=document.getElementById('hint-'+id);
+  const item=g('item').value.trim(); const brandAny=g('brandAny').checked; const brand=g('brand').value.trim();
+  let qty=parseInt(g('qty').value,10); if(!qty||qty<1) qty=1;
+  if(!item){ hint.textContent="Add an item name."; g('item').focus(); return; }
+  if(!brandAny && !brand){ hint.textContent="Name a brand, or tick \u201cNo preference \u2014 your pick.\u201d"; g('brand').focus(); return; }
+  const size=g('size').value.trim();
+  if(!size){ hint.textContent="Add a size (e.g. 1 gallon, 12 oz, 750ml)."; g('size').focus(); return; }
+  hint.textContent="";
+  (S.items[id]=S.items[id]||[]).push({item,brand,brandAny,qty,size:g('size').value.trim(),sub:g('sub').value,note:g('note').value.trim()});
+  g('item').value=''; g('brand').value=''; g('brand').disabled=false; g('brandAny').checked=false; g('qty').value='1'; g('size').value=''; g('sub').value='default'; g('note').value='';
+  renderLines(id); refreshRecap(); refreshFill(); g('item').focus();
+}
+
+/* ── Gating ───────────────────────────────────────────────────────── */
+function refreshGate(){
+  const setupOk = (S.allergyNone || S.allergies.trim()) && S.sub;
+  document.body.classList.toggle('setup-locked', !setupOk);
+  const b=document.getElementById('submit-btn');
+  if(!b) return;
+  const hasLocation = S.prop.trim() || (S.code && S.code.trim());
+  const ok=setupOk && S.confirm && S.name.trim() && S.phone.trim() && hasLocation && S.dates.trim() && itemCount()>0;
+  b.disabled=!ok; b.style.opacity=ok?"":".4"; b.style.pointerEvents=ok?"":"none";
+}
+
+/* ── Wire static UI once ──────────────────────────────────────────── */
+function wireAll(){
+  // suggestion toggles
+  document.querySelectorAll('.sug-toggle').forEach(btn=>btn.addEventListener('click',()=>{
+    const target=document.getElementById(btn.dataset.toggle);
+    const open=target.style.display!=='none';
+    target.style.display=open?'none':'flex';
+    btn.textContent=open?'See suggestions':'Hide suggestions';
+    btn.classList.toggle('open',!open);
+  }));
+  // suggestion chips populate the panel's item field
+  document.querySelectorAll('[data-sug]').forEach(b=>b.addEventListener('click',()=>{
+    const panel=b.closest('section').querySelector('.addpanel');
+    const it=panel.querySelector('[data-fld="item"]'); if(!it) return;
+    it.value=b.dataset.sug; const br=panel.querySelector('[data-fld="brand"]'); if(br) br.focus();
+  }));
+  // add buttons
+  document.querySelectorAll('[data-additem]').forEach(b=>b.addEventListener('click',()=>addItem(b.dataset.additem)));
+  // qty steppers
+  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{
+    const inp=b.parentElement.querySelector('[data-fld="qty"]'); let v=parseInt(inp.value,10)||1;
+    v=b.dataset.step==='+'?v+1:Math.max(1,v-1); inp.value=v;
+  }));
+  // brandAny toggles brand
+  document.querySelectorAll('[data-fld="brandAny"]').forEach(cb=>cb.addEventListener('change',()=>{
+    const br=cb.closest('.fld').querySelector('[data-fld="brand"]');
+    br.disabled=cb.checked; if(cb.checked) br.value='';
+  }));
+  // enter-submits-in-addpanel
+  document.querySelectorAll('.addpanel [data-fld]').forEach(inp=>inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter' && inp.tagName==='INPUT' && inp.type!=='checkbox'){
+      e.preventDefault();
+      const panel=inp.closest('.addpanel'); if(panel) addItem(panel.id.replace('add-',''));
+    }
+  }));
+  // setup: allergies input, no-allergies checkbox, sub seg
+  document.querySelectorAll('[data-f]').forEach(inp=>inp.addEventListener('input',()=>{
+    S[inp.dataset.f]=inp.value; refreshRecap();
+  }));
+  document.querySelectorAll('[data-bool]').forEach(cb=>cb.addEventListener('change',()=>{
+    S[cb.dataset.bool]=cb.checked;
+    if(cb.dataset.bool==='allergyNone'){
+      const al=document.getElementById('allergies-input');
+      al.disabled=cb.checked; if(cb.checked){ al.value=''; S.allergies=''; }
+    }
+    refreshRecap();
+  }));
+  document.querySelectorAll('[data-seg]').forEach(seg=>{
+    seg.querySelectorAll('.segopt').forEach(o=>o.addEventListener('click',()=>{
+      S[seg.dataset.seg]=o.dataset.v;
+      seg.querySelectorAll('.segopt').forEach(x=>x.classList.toggle('sel', x===o));
+      refreshRecap();
+    }));
+  });
+  // partner code recognition
+  const KNOWN_CODES = {
+    'leveled': 'Leveled Mgmt',
+    'leveled-mgmt': 'Leveled Mgmt',
+    'nova': 'Nova Concierge'
+  };
+  const codeInput = document.getElementById('code-input');
+  const codeMsg = document.getElementById('code-msg');
+  if(codeInput){
+    codeInput.addEventListener('input', ()=>{
+      const v = codeInput.value.trim().toLowerCase();
+      const match = KNOWN_CODES[v];
+      codeMsg.textContent = match ? `We'll coordinate delivery with ${match}, the company managing your home.` : '';
+    });
+  }
+
+  // submit
+  document.getElementById('submit-btn').addEventListener('click',()=>{
+    const done=document.getElementById('sec-done');
+    document.getElementById('done-lede').textContent =
+      `We've got your list${S.name?`, ${S.name.split(" ")[0]}`:''}. You'll get one text with your all-in price shortly \u2014 say the word, tap to pay, and walk into a home that's already yours.`;
+    done.classList.add('show');
+    setTimeout(()=>done.scrollIntoView({behavior:'smooth',block:'start'}), 30);
+  });
+  document.getElementById('restart-btn').addEventListener('click',()=>location.reload());
+}
+wireAll();
+
+/* ── Scroll-driven atmosphere + rail ──────────────────────────────── */
+const sections = [...document.querySelectorAll('section.screen')];
+function activeSection(){
+  const mid = window.scrollY + window.innerHeight * 0.42;
+  let best = sections[0];
+  for(const s of sections){
+    if(s.id==='sec-done' && !s.classList.contains('show')) continue;
+    const top = s.offsetTop;
+    if(top <= mid) best = s;
+  }
+  return best;
+}
+function applyAtmosFor(scr){
+  const m = ATMOS[scr] || ATMOS.hook;
+  document.body.style.setProperty('--bg-a',m[0]);
+  document.body.style.setProperty('--bg-b',m[1]);
+  document.body.style.setProperty('--bg-c',m[2]);
+  document.body.style.setProperty('--glow-y',m[3]);
+  document.body.style.setProperty('--glow',m[4]);
+  document.body.setAttribute('data-screen',scr);
+}
+function refreshFill(){
+  if(document.body.classList.contains('setup-locked')){
+    const f = document.getElementById('fill');
+    if(isMob()){ document.body.classList.add('mob'); f.style.setProperty('--w','0%'); }
+    else { document.body.classList.remove('mob'); f.style.height='0%'; }
+    document.getElementById('pct').textContent='0%';
+    document.querySelector('#hair i').style.width='0%';
+    return;
+  }
+  const maxEl = document.getElementById('sec-done').classList.contains('show')
+    ? document.getElementById('sec-done')
+    : document.getElementById('sec-checkout');
+  const max = maxEl.offsetTop + maxEl.offsetHeight - window.innerHeight;
+  const t = Math.max(0, Math.min(1, window.scrollY / Math.max(1,max)));
+  const pct = Math.round(t*100);
+  const f = document.getElementById('fill');
+  if(isMob()){ document.body.classList.add('mob'); f.style.setProperty('--w', pct+"%"); }
+  else { document.body.classList.remove('mob'); f.style.height = pct+"%"; }
+  document.getElementById('pct').textContent = pct + "%";
+  document.querySelector('#hair i').style.width = pct + "%";
+  // update ticks
+  document.querySelectorAll('#ticks i').forEach(t=>t.classList.remove('on'));
+}
+function buildTicks(){
+  const ticks=document.getElementById('ticks');
+  ticks.innerHTML='';
+  // 5 ticks marking d1..d5
+  for(let i=1;i<=5;i++){
+    const el=document.createElement('i');
+    // distribute evenly along the track from bottom (i=5 is top, i=1 is near bottom of fill range)
+    el.style.bottom = (i*18)+'%';
+    ticks.appendChild(el);
+  }
+}
+buildTicks();
+
+let lastScreen = null;
+let ticking = false;
+function onScroll(){
+  if(ticking) return;
+  ticking = true;
+  requestAnimationFrame(()=>{
+    const sec = activeSection();
+    const scr = sec.dataset.screen;
+    const fath = sec.dataset.fathom || 0;
+    document.getElementById('fathom').textContent = fath;
+    if(scr !== lastScreen){
+      lastScreen = scr;
+      applyAtmosFor(scr);
+    }
+    refreshFill();
+    ticking = false;
+  });
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+window.addEventListener('resize', onScroll);
+
+/* reveal */
+const revObs = new IntersectionObserver(es=>es.forEach(en=>{
+  if(en.isIntersecting) en.target.classList.add('in');
+}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* motes + spotlight */
+(function motes(){
+  const c=document.getElementById('motes'); let n=isMob()?10:18;
+  for(let i=0;i<n;i++){
+    const m=document.createElement('span'); m.className='mote';
+    m.style.left=Math.random()*100+'%';
+    const dur=14+Math.random()*16; m.style.animationDuration=dur+'s'; m.style.animationDelay=(-Math.random()*dur)+'s';
+    m.style.setProperty('--drift',(Math.random()*60-30)+'px');
+    m.style.width=m.style.height=(2+Math.random()*2.5)+'px';
+    c.appendChild(m);
+  }
+})();
+const spot=document.getElementById('spot');
+if(window.matchMedia("(pointer:fine)").matches){
+  window.addEventListener('pointermove',e=>{
+    spot.style.opacity=1;
+    spot.style.setProperty('--mx',e.clientX+'px');
+    spot.style.setProperty('--my',e.clientY+'px');
+  });
+}
+
+applyAtmosFor('hook'); onScroll();
+
+// hamburger nav
+(function(){
+  const btn=document.getElementById('hbtn'), panel=document.getElementById('hpanel'), overlay=document.getElementById('hoverlay');
+  function toggle(){ btn.classList.toggle('open'); panel.classList.toggle('open'); overlay.classList.toggle('open'); }
+  function close(){ btn.classList.remove('open'); panel.classList.remove('open'); overlay.classList.remove('open'); }
+  btn.addEventListener('click', toggle);
+  overlay.addEventListener('click', close);
+  panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+})();
+</script>
+</body>
+</html>

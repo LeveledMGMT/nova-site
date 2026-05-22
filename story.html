@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nova — arrive to a home that's already yours</title>
+<meta name="description" content="Nova is off-platform concierge provisioning for short-term rentals. Tell us anything you want and we'll have it unpacked, chilled, and waiting before you walk in.">
+<meta property="og:title" content="Nova — arrive to a home that's already yours">
+<meta property="og:description" content="Nova is off-platform concierge provisioning for short-term rentals. Tell us anything you want and we'll have it unpacked, chilled, and waiting before you walk in.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nova Concierge">
+<meta property="og:image" content="/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/og-image.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..600&family=Hanken+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#e9c98a; --gold-hi:#fff3d6; --gold-deep:#b78a3f;
+    --cream:#efeaf2; --cream-dim:#c2bcd4; --cream-faint:#857f96;
+    --line:rgba(233,201,138,.22);
+    --bg-a:#1c1f42; --bg-b:#0c0d22; --bg-c:#060611;
+    --glow:rgba(233,201,138,.13);
+    --card:rgba(255,255,255,.035); --card-line:rgba(243,236,221,.10);
+    --display:"Fraunces",Georgia,serif; --ui:"Hanken Grotesk",-apple-system,sans-serif; --mono:"JetBrains Mono",monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --scroll:0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth; scrollbar-width:none}
+  html::-webkit-scrollbar{display:none}
+  body{font-family:var(--ui); color:var(--cream); background:var(--bg-c); -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.5}
+  ::selection{background:var(--gold); color:#2a1c06}
+
+  #atmos{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(125% 95% at 50% 4%, var(--bg-a) 0%, var(--bg-b) 52%, var(--bg-c) 100%);
+    transition:background 1.4s var(--ease)}
+  #atmos::after{content:""; position:absolute; inset:0;
+    background:radial-gradient(60% 50% at 50% 4%, var(--glow) 0%, transparent 70%);
+    transition:background 1.4s var(--ease)}
+  #grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  #spot{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0; transition:opacity .6s; background:radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(255,243,214,.05), transparent 70%)}
+  .motes{position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden}
+  .mote{position:absolute; bottom:-10px; border-radius:50%; background:var(--gold-hi); opacity:0; filter:blur(.4px); animation:rise linear infinite}
+  @keyframes rise{0%{transform:translateY(0);opacity:0}12%{opacity:.55}88%{opacity:.30}100%{transform:translateY(-110vh) translateX(var(--drift,12px));opacity:0}}
+
+  /* top bar */
+  header{position:fixed; top:0; left:0; right:0; z-index:9; display:flex; align-items:center; justify-content:space-between;
+    padding:22px 36px; background:linear-gradient(180deg,rgba(6,6,17,.55),rgba(6,6,17,0)); backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px)}
+  .wordmark{font-family:var(--display); font-weight:600; letter-spacing:.42em; text-transform:uppercase; color:var(--cream); font-size:14px; text-decoration:none}
+  .wordmark .dot{color:var(--gold)}
+  /* luxe hamburger */
+  .hbtn{position:fixed; top:24px; right:28px; z-index:12; width:48px; height:48px; border:none;
+    background:rgba(255,255,255,.06); border-radius:14px; cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:6px; transition:all .3s var(--ease);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(233,201,138,.08); box-shadow:0 4px 24px -8px rgba(0,0,0,.3)}
+  .hbtn:hover{background:rgba(233,201,138,.10); border-color:rgba(233,201,138,.22);
+    box-shadow:0 4px 32px -8px rgba(233,201,138,.18)}
+  .hbtn span{display:block; width:20px; height:1.5px; background:var(--gold); border-radius:2px;
+    transition:all .35s var(--ease); transform-origin:center}
+  .hbtn.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .hbtn.open span:nth-child(2){opacity:0; transform:scaleX(0)}
+  .hbtn.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+  .hpanel{position:fixed; top:0; right:0; z-index:11; width:320px; height:100vh;
+    background:rgba(6,6,17,.88); border-left:1px solid var(--card-line);
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+    transform:translateX(100%); transition:transform .45s var(--ease);
+    display:flex; flex-direction:column; padding:100px 36px 48px}
+  .hpanel::before{content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.5}
+  .hpanel.open{transform:none}
+  .hpanel a{display:block; padding:18px 0; color:var(--cream-dim); text-decoration:none;
+    font-family:var(--display); font-weight:400; font-size:22px; letter-spacing:.02em;
+    border-bottom:1px solid rgba(243,236,221,.06); transition:color .25s, padding-left .3s var(--ease)}
+  .hpanel a:hover{color:var(--gold-hi); padding-left:8px}
+  .hpanel a:first-child{border-top:1px solid rgba(243,236,221,.06)}
+  .hpanel .hfoot{margin-top:24px; font-family:var(--display); font-weight:600; font-size:16px;
+    letter-spacing:.4em; text-transform:uppercase; color:rgba(239,234,242,.12)}
+  .hpanel .hfoot .dot{color:rgba(233,201,138,.25)}
+  .hpanel .hcta{margin-top:auto; text-align:center; font-family:var(--ui); font-weight:600; font-size:15px;
+    background:linear-gradient(180deg,var(--gold-hi),var(--gold)); color:#2a1c06; border-radius:100px;
+    padding:16px 28px; border:none; letter-spacing:.02em;
+    box-shadow:0 12px 36px -10px rgba(233,201,138,.5);
+    transition:transform .35s var(--ease), box-shadow .35s}
+  .hpanel .hcta:hover{color:#2a1c06; padding-left:0; transform:translateY(-2px);
+    box-shadow:0 18px 44px -10px rgba(233,201,138,.7)}
+  .hoverlay{position:fixed; inset:0; z-index:10; background:rgba(0,0,0,.4); opacity:0; pointer-events:none;
+    transition:opacity .35s; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px)}
+  .hoverlay.open{opacity:1; pointer-events:auto}
+
+  /* depth rail */
+  #rail{position:fixed; left:0; top:0; bottom:0; width:88px; z-index:5; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:18px; pointer-events:none;
+    border-right:1px solid var(--card-line); background:linear-gradient(180deg,rgba(6,6,17,.7),rgba(6,6,17,.85))}
+  #rail .cap{font-size:9.5px; letter-spacing:.32em; color:var(--cream-faint); text-transform:uppercase}
+  #fathom{font-family:var(--display); font-weight:600; font-size:38px; line-height:.9; color:var(--gold-hi);
+    font-variant-numeric:tabular-nums; transition:color .6s}
+  #track{width:6px; flex:0 0 38vh; max-height:340px; border-radius:6px; background:rgba(243,236,221,.10);
+    position:relative; overflow:hidden}
+  #fill{position:absolute; left:0; right:0; bottom:0; height:0%;
+    background:linear-gradient(180deg,var(--gold-hi),var(--gold-deep));
+    transition:height .5s var(--ease); box-shadow:0 0 18px rgba(233,201,138,.5)}
+  #rail .pct{font-size:11px; letter-spacing:.12em; color:var(--cream-dim); font-variant-numeric:tabular-nums}
+  #rail .stk{font-size:9px; letter-spacing:.26em; color:var(--cream-faint); text-transform:uppercase;
+    writing-mode:vertical-rl; transform:rotate(180deg); margin-top:2px}
+
+  .mark{font-family:var(--display); font-weight:600; letter-spacing:.4em; font-size:13px; color:var(--cream); text-transform:uppercase; position:fixed; top:26px; left:44px; transform:translateX(-50%); text-decoration:none; transition:color .25s; z-index:10}
+  .mark:hover{color:var(--gold-hi)}
+  .mark .dot{color:var(--gold)}
+  #rail .mark:hover{color:var(--gold-hi)}
+  #rail .mark .dot{color:var(--gold)}
+
+  /* main */
+  main{position:relative; z-index:3; padding-left:88px}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 56px}
+  section{position:relative; padding:140px 0}
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity 1s var(--ease), transform 1s var(--ease)}
+  .reveal.in{opacity:1; transform:none}
+
+  .kicker{font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--gold);
+    display:flex; align-items:center; gap:12px; margin-bottom:28px}
+  .kicker::before{content:""; width:34px; height:1px; background:var(--gold)}
+  .roman{font-family:var(--display); font-style:italic; color:var(--gold-hi); font-weight:400}
+
+  h1{font-family:var(--display); font-weight:300; font-optical-sizing:auto; line-height:.96; font-size:clamp(44px,11vw,168px); letter-spacing:-.035em}
+  h2{font-family:var(--display); font-weight:340; font-size:clamp(38px,6.4vw,84px); line-height:1.03; letter-spacing:-.025em}
+  h2 em,h1 em{font-style:italic; color:var(--gold-hi)}
+  h3{font-family:var(--ui); font-weight:600; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--cream-faint); margin:36px 0 16px}
+  .lede{font-size:clamp(17px,1.6vw,22px); color:var(--cream-dim); max-width:54ch; line-height:1.55; margin-top:30px; font-weight:300}
+  p.body{color:var(--cream-dim); max-width:62ch; margin-top:14px; font-weight:300; font-size:17px; line-height:1.6}
+  .whisper{font-family:var(--display); font-style:italic; color:var(--cream-faint); font-size:16px}
+
+  /* hero */
+  #hero{min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:160px 0 100px}
+  #hero .wrap{text-align:center}
+  #hero .kicker{justify-content:center}
+  #hero .kicker::before{content:""; width:34px; height:1px; background:var(--gold)}
+  #hero .kicker::after{content:""; width:34px; height:1px; background:var(--gold)}
+  #hero .row{display:flex; flex-wrap:wrap; gap:18px 28px; align-items:center; justify-content:center; margin-top:48px}
+  .btn{font-family:var(--ui); font-weight:600; font-size:15.5px; border:none; border-radius:100px;
+    padding:18px 32px; cursor:pointer; transition:transform .35s var(--ease), box-shadow .35s; text-decoration:none;
+    display:inline-flex; align-items:center; gap:10px}
+  .btn.primary{background:linear-gradient(180deg,var(--gold-hi),var(--gold)); color:#2a1c06;
+    box-shadow:0 16px 44px -12px rgba(233,201,138,.7)}
+  .btn.primary:hover{transform:translateY(-3px); box-shadow:0 24px 60px -12px rgba(233,201,138,.85)}
+  .btn.ghost{background:transparent; color:var(--cream-dim); border:1px solid var(--card-line); padding:17px 28px}
+  .btn.ghost:hover{color:var(--cream); border-color:var(--gold); transform:translateY(-2px)}
+
+  .yours-wrap{display:block; position:relative}
+  .yours-wrap em{display:inline-block}
+
+  .cue{position:absolute; left:56px; bottom:36px; display:flex; align-items:center; gap:14px;
+    color:var(--cream-faint); font-size:11px; letter-spacing:.32em; text-transform:uppercase;
+    animation:bob 2.6s ease-in-out infinite}
+  .cue::after{content:""; width:1px; height:42px; background:linear-gradient(180deg,var(--gold),transparent)}
+  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)}}
+
+  /* premise */
+  #premise h2{max-width:18ch}
+
+  /* how it works */
+  .steps{margin-top:60px; display:flex; flex-direction:column; gap:8px}
+  .step{display:grid; grid-template-columns:240px 1fr; gap:48px; align-items:start;
+    padding:42px 0; border-top:1px solid var(--card-line); position:relative}
+  .step:last-child{border-bottom:1px solid var(--card-line)}
+  .step .num{font-family:var(--display); font-weight:300; font-size:clamp(120px,16vw,200px); line-height:.85;
+    color:var(--cream); letter-spacing:-.04em; transition:color .6s var(--ease), transform .6s var(--ease)}
+  .step:hover .num{color:var(--gold-hi); transform:translateX(8px)}
+  .step .meat h3.steph{font-family:var(--display); font-weight:340; font-size:clamp(28px,3.2vw,40px);
+    color:var(--cream); margin:0 0 14px; letter-spacing:-.015em; line-height:1.1; text-transform:none}
+  .step .meat h3.steph em{font-style:italic; color:var(--gold-hi)}
+  .step .meat p{color:var(--cream-dim); font-size:17px; max-width:48ch; font-weight:300; line-height:1.6}
+  .step .meat .meta{margin-top:18px; font-family:var(--mono); font-size:11px; color:var(--gold);
+    letter-spacing:.18em; text-transform:uppercase}
+
+  /* sample order */
+  #demo .lede{margin-bottom:50px}
+  .demo-grid{display:grid; grid-template-columns:1fr 1.2fr; gap:48px; align-items:start; margin-top:24px}
+  .demo-meta{position:sticky; top:120px}
+  .demo-meta h4{font-family:var(--display); font-weight:340; font-size:32px; color:var(--cream); margin-bottom:20px; line-height:1.1}
+  .demo-meta h4 em{font-style:italic; color:var(--gold-hi)}
+  .demo-meta p{color:var(--cream-dim); font-weight:300; font-size:16px; max-width:42ch; line-height:1.6}
+  .demo-meta .note{margin-top:24px; font-family:var(--mono); font-size:11.5px; color:var(--gold); letter-spacing:.16em;
+    text-transform:uppercase; display:flex; align-items:center; gap:10px}
+  .demo-meta .note::before{content:""; width:24px; height:1px; background:var(--gold)}
+
+  .order{border:1px solid var(--card-line); border-radius:24px; padding:30px; background:var(--card);
+    backdrop-filter:blur(4px); position:relative; overflow:hidden}
+  .order::before{content:""; position:absolute; left:0; top:0; right:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.4}
+  .order h5{font-family:var(--mono); font-size:10.5px; color:var(--cream-faint); letter-spacing:.22em;
+    text-transform:uppercase; margin-bottom:6px}
+  .order .ord-h{display:flex; justify-content:space-between; align-items:baseline; padding-bottom:18px;
+    border-bottom:1px solid var(--card-line); margin-bottom:22px}
+  .order .ord-h .pl{font-family:var(--display); font-style:italic; font-size:18px; color:var(--gold-hi)}
+  .order-lines{display:flex; flex-direction:column; gap:10px}
+  .line{display:flex; align-items:center; gap:16px; padding:14px 18px; border-radius:14px;
+    background:linear-gradient(165deg,rgba(233,201,138,.16),rgba(233,201,138,.04));
+    box-shadow:0 0 0 1px var(--gold) inset;
+    opacity:0; transform:translateY(14px) scale(.98); transition:.55s var(--ease)}
+  .line.in{opacity:1; transform:none}
+  .line .q{font-family:var(--display); font-weight:600; font-size:17px; color:var(--gold-hi); min-width:34px;
+    font-variant-numeric:tabular-nums; text-align:center}
+  .line .body-l{flex:1; min-width:0}
+  .line .nm{font-family:var(--display); font-weight:500; font-size:17.5px; color:var(--gold-hi); line-height:1.2}
+  .line .s{font-size:13px; color:var(--cream-dim); margin-top:3px; font-weight:300}
+  .line .depth-tag{font-family:var(--mono); font-size:10px; color:var(--cream-faint); letter-spacing:.14em;
+    text-transform:uppercase; padding:5px 10px; border-radius:100px; border:1px solid var(--card-line);
+    flex:0 0 auto}
+  .order .foot{margin-top:24px; padding-top:20px; border-top:1px solid var(--card-line);
+    display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap}
+  .order .foot .quote{font-family:var(--display); font-style:italic; font-size:15px; color:var(--cream-faint)}
+  .order .foot .send{font-family:var(--ui); font-weight:600; font-size:13px; color:var(--gold-hi);
+    padding:11px 18px; border-radius:100px; border:1px dashed var(--gold); background:transparent;
+    letter-spacing:.04em}
+
+  /* anything */
+  #anything{padding:180px 0 200px}
+  #anything .word{font-family:var(--display); font-style:italic; font-weight:300;
+    font-size:clamp(120px,22vw,320px); line-height:.85; color:var(--gold-hi); letter-spacing:-.03em;
+    text-shadow:0 0 80px rgba(255,205,130,.18); margin:32px 0}
+  #anything p.body{font-size:19px; max-width:52ch}
+  #anything .row{display:flex; flex-wrap:wrap; gap:18px 28px; align-items:center; margin-top:54px}
+
+  /* signoff */
+  .signoff{padding:140px 0 60px; text-align:center}
+  .signoff .word{font-family:var(--display); font-weight:600; letter-spacing:.32em; text-transform:uppercase;
+    font-size:clamp(48px,12vw,180px); color:var(--cream); line-height:1}
+  .signoff .word .dot{color:var(--gold)}
+  .signoff .tag{margin-top:30px; font-family:var(--display); font-style:italic; font-size:clamp(20px,2.4vw,28px);
+    color:var(--cream-dim)}
+
+  /* footer */
+  footer{position:relative; z-index:3; padding:60px 56px 60px 144px; border-top:1px solid var(--card-line);
+    color:var(--cream-faint); font-size:13px; background:rgba(0,0,0,.2)}
+  .foot-grid{display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:48px; max-width:1200px; margin:0 auto}
+  .foot-grid .col h6{font-family:var(--ui); font-weight:600; font-size:11px; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--cream); margin-bottom:18px}
+  .foot-grid .col a{display:block; color:var(--cream-faint); text-decoration:none; padding:6px 0;
+    font-size:14px; transition:.2s; font-weight:300}
+  .foot-grid .col a:hover{color:var(--gold-hi)}
+  .foot-grid .lead .wordmark{font-size:14px; margin-bottom:16px; display:inline-block}
+  .foot-grid .lead p{color:var(--cream-faint); font-size:14px; max-width:36ch; line-height:1.6; font-weight:300}
+  .foot-bot{max-width:1200px; margin:48px auto 0; padding-top:28px; border-top:1px solid var(--card-line);
+    display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; color:var(--cream-faint); font-size:12px;
+    font-family:var(--mono); letter-spacing:.06em}
+  .foot-bot a{color:var(--cream-faint); text-decoration:none}
+  .foot-bot a:hover{color:var(--gold-hi)}
+
+  @media (max-width:900px){
+    header{padding:16px 20px}
+    .wordmark{font-size:11px; letter-spacing:.32em}
+    .hbtn{top:14px; right:16px; width:44px; height:44px}
+    .hpanel{width:280px; padding:90px 28px 40px}
+    #rail{display:none}
+    .mark{display:none}
+    main{padding-left:0}
+    .wrap{padding:0 20px}
+    section{padding:96px 0}
+    .cue{display:none}
+    h1{font-size:clamp(34px,9vw,52px)}
+    h2{font-size:clamp(28px,7vw,44px)}
+    .kicker{font-size:9px; letter-spacing:.28em; margin-bottom:20px}
+    .lede{font-size:15px}
+    p.body{font-size:15px}
+    .whisper{font-size:14px}
+    .btn{padding:16px 28px; font-size:14px}
+    .step{grid-template-columns:1fr; gap:6px}
+    .step .num{font-size:clamp(80px,22vw,140px)}
+    .step .meat h3.steph{font-size:clamp(22px,5vw,32px)}
+    .step .meat p{font-size:15px}
+    .demo-grid{grid-template-columns:1fr; gap:32px}
+    .demo-meta{position:static}
+    .order{padding:20px}
+    .order .ord-h{flex-direction:column; gap:12px}
+    .order .ord-h > div:last-child{text-align:left}
+    .line .depth-tag{display:none}
+    #anything{padding:120px 0 140px}
+    #anything .word{font-size:clamp(36px,9vw,60px)}
+    footer{padding:60px 20px}
+    .foot-grid{grid-template-columns:1fr 1fr; gap:32px}
+  }
+  @media (max-width:560px){
+    .foot-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <div id="atmos"></div>
+  <div class="motes" id="motes"></div>
+  <div id="spot"></div>
+  <div id="grain"></div>
+
+  <button class="hbtn" id="hbtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="hoverlay" id="hoverlay"></div>
+  <nav class="hpanel" id="hpanel">
+    <a href="/">Home</a>
+    <a href="/story">The Story</a>
+    <a href="/faq">Partners FAQ</a>
+    <a href="/field-notes">Field Notes</a>
+    <a href="/contact">Contact</a>
+    <a href="/order" class="hcta">Start Your Experience</a>
+    <div class="hfoot">Nova<span class="dot">.</span></div>
+  </nav>
+
+  <header>
+    <div></div>
+  </header>
+
+  <a href="/" class="mark">Nova<span class="dot">.</span></a>
+  <aside id="rail" aria-hidden="true">
+    <div class="cap">Depth</div>
+    <div id="fathom">0</div>
+    <div id="track"><div id="fill"></div></div>
+    <div class="pct" id="pct">0%</div>
+    <div class="stk">Descending</div>
+  </aside>
+
+  <main id="top">
+
+    <section id="hero">
+      <div class="wrap">
+        <div class="kicker reveal">Concierge provisioning &middot; Newport Beach &amp; Coastal SoCal</div>
+        <h1 class="reveal">Arrive to a home<br><span class="yours-wrap">that's <em>already&nbsp;yours.</em></span></h1>
+        <div class="row reveal">
+          <a href="/order" class="btn primary">Start your experience
+            <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 7h13M11 2l4 5-4 5"/></svg>
+          </a>
+        </div>
+        <p class="whisper reveal" style="margin-top:24px">Have your place stocked and ready before you even arrive. Build your custom order and we'll send a quote within 24 hours.</p>
+      </div>
+      <div class="cue">Descend</div>
+    </section>
+
+    <section id="premise" class="reveal">
+      <div class="wrap">
+        <div class="kicker"><span class="roman">I</span>&nbsp;&nbsp;The premise</div>
+        <h2>Walk into a home<br>that's <em>ready.</em></h2>
+        <p class="body">There is no cart, no price tag, no surge. You tell us the dream; we text back one all-in number; you tap to pay. Then you walk in to a fridge already humming.</p>
+      </div>
+    </section>
+
+    <section id="mission" class="reveal">
+      <div class="wrap">
+        <div class="kicker"><span class="roman">II</span>&nbsp;&nbsp;Mission</div>
+        <h2>Every stay should begin<br>like <em>a homecoming.</em></h2>
+        <p class="body">The first thirty minutes set the tone for the whole trip. We make those minutes feel like you've lived there for years — your coffee on the counter, your kids' snacks in the cabinet, everything exactly how you'd stock it yourself.</p>
+      </div>
+    </section>
+
+    <section id="how" class="reveal">
+      <div class="wrap">
+        <div class="kicker"><span class="roman">III</span>&nbsp;&nbsp;How it works</div>
+        <h2>Three small steps. <em>One quiet arrival.</em></h2>
+
+        <div class="steps">
+          <div class="step">
+            <div class="num">01</div>
+            <div class="meat">
+              <h3 class="steph">Tell us <em>what you want.</em></h3>
+              <p>Walk through a few quick categories — breakfast, snacks, meals, drinks, and anything else. Be as specific as you like. Brand, size, quantity — your list is the contract.</p>
+              <div class="meta">~3 minutes &middot; No card up front</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">02</div>
+            <div class="meat">
+              <h3 class="steph">We send you <em>one all-in quote.</em></h3>
+              <p>A real person reviews your list, sources everything, and sends back a single number — groceries, delivery, service, all included. No surprises. Tap the link to pay.</p>
+              <div class="meta">Quote within 24 hours &middot; Summary + payment link</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">03</div>
+            <div class="meat">
+              <h3 class="steph">Walk into <em>a home that's ready.</em></h3>
+              <p>Before you check in, our team stocks everything in the right spots and chills what needs chilling. You get a photo of the loaded fridge before you walk in.</p>
+              <div class="meta">Stocked before check-in &middot; Photo confirmation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="reveal">
+      <div class="wrap">
+        <div class="kicker"><span class="roman">IV</span>&nbsp;&nbsp;A sample order</div>
+        <h2>Here's what a <em>real list</em> looks like.</h2>
+        <p class="lede">Every item has a quantity, a brand preference, and a backup plan if it's out of stock.</p>
+
+        <div class="demo-grid">
+          <div class="demo-meta">
+            <h4>A family of four,<br><em>arriving Friday.</em></h4>
+            <p>Two adults, two kids. Breakfast staples, snacks for the road, dinner for the first night, and a few extras to make it feel like home.</p>
+            <div class="note">Scroll the page to watch it stack</div>
+          </div>
+
+          <div class="order">
+            <div class="ord-h">
+              <div>
+                <h5>Order 0247 &middot; Pending quote</h5>
+                <div class="pl">Newport Beach rental</div>
+              </div>
+              <div style="text-align:right">
+                <h5>Check-in</h5>
+                <div style="font-family:var(--display);font-size:17px;color:var(--cream);margin-top:4px">Fri, 4:00 PM</div>
+              </div>
+            </div>
+
+            <div class="order-lines" id="orderLines">
+              <div class="line" data-line><span class="q">1&times;</span><div class="body-l"><div class="nm">Coffee beans, whole</div><div class="s">12oz bag &middot; any good local roast</div></div><span class="depth-tag">Breakfast</span></div>
+              <div class="line" data-line><span class="q">1&times;</span><div class="body-l"><div class="nm">Whole milk, organic</div><div class="s">1 gallon &middot; any brand</div></div><span class="depth-tag">Breakfast</span></div>
+              <div class="line" data-line><span class="q">2&times;</span><div class="body-l"><div class="nm">Topo Chico, glass</div><div class="s">12-pack &middot; sub: LaCroix lime if out</div></div><span class="depth-tag">Snacks</span></div>
+              <div class="line" data-line><span class="q">1&times;</span><div class="body-l"><div class="nm">Sourdough boule, fresh</div><div class="s">today's bake &middot; any good bakery</div></div><span class="depth-tag">Snacks</span></div>
+              <div class="line" data-line><span class="q">4&times;</span><div class="body-l"><div class="nm">Ribeye steaks</div><div class="s">1.5in thick &middot; skip if not Prime</div></div><span class="depth-tag">Meals</span></div>
+              <div class="line" data-line><span class="q">1&times;</span><div class="body-l"><div class="nm">Sunscreen, SPF 50</div><div class="s">reef-safe &middot; any brand</div></div><span class="depth-tag">Extras</span></div>
+              <div class="line" data-line><span class="q">1&times;</span><div class="body-l"><div class="nm">Fresh flowers for the table</div><div class="s">seasonal mix &middot; your pick</div></div><span class="depth-tag">Extras</span></div>
+            </div>
+
+            <div class="foot">
+              <span class="quote">Quote within 24 hours — summary + payment link.</span>
+              <span class="send">Send my request &rarr;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="anything" class="reveal" style="text-align:center">
+      <div class="wrap">
+        <div class="word" style="font-size:clamp(48px,10vw,120px)">Built for you.</div>
+        <div class="row" style="justify-content:center">
+          <a href="/order" class="btn primary">Start your experience
+            <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 7h13M11 2l4 5-4 5"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <footer>
+    <div class="foot-grid">
+      <div class="col lead">
+        <span class="wordmark">Nova<span class="dot">.</span></span>
+        <p>A luxury vacation rental concierge company.</p>
+      </div>
+      <div class="col">
+        <h6>Experience</h6>
+        <a href="/order">Start your order</a>
+        <a href="#how">How it works</a>
+        <a href="#demo">A sample order</a>
+        <a href="#anything">Anything</a>
+      </div>
+      <div class="col">
+        <h6>Company</h6>
+        <a href="#premise">About</a>
+        <a href="#mission">Mission</a>
+        <a href="#">Field notes <span style="color:var(--cream-faint);opacity:.6">— soon</span></a>
+        <a href="/contact">Contact</a>
+      </div>
+      <div class="col">
+        <h6 id="partners">Partners</h6>
+        <a href="/contact">Work with us &rarr;</a>
+        <a href="/faq">Partners FAQ</a>
+        <a href="/partner-portal">Partner portal</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>&copy; Nova Concierge &middot; MMXXVI</span>
+      <span>Newport Beach, CA</span>
+      <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>
+    </div>
+  </footer>
+
+<script>
+  // drifting motes
+  (function(){
+    const c=document.getElementById('motes');
+    const mob=matchMedia('(max-width:760px)').matches;
+    const n=mob?10:20;
+    for(let i=0;i<n;i++){
+      const m=document.createElement('span'); m.className='mote';
+      m.style.left=Math.random()*100+'%';
+      const d=14+Math.random()*16;
+      m.style.animationDuration=d+'s';
+      m.style.animationDelay=(-Math.random()*d)+'s';
+      m.style.setProperty('--drift',(Math.random()*60-30)+'px');
+      const s=2+Math.random()*2.5;
+      m.style.width=s+'px'; m.style.height=s+'px';
+      c.appendChild(m);
+    }
+  })();
+
+  // cursor spotlight
+  const spot=document.getElementById('spot');
+  if(matchMedia('(pointer:fine)').matches){
+    addEventListener('pointermove',e=>{
+      spot.style.opacity=1;
+      spot.style.setProperty('--mx',e.clientX+'px');
+      spot.style.setProperty('--my',e.clientY+'px');
+    });
+  }
+
+  // reveal on scroll
+  const obs=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); }}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(s=>obs.observe(s));
+  document.querySelectorAll('#hero .reveal').forEach((el,i)=>setTimeout(()=>el.classList.add('in'), 120 + i*140));
+
+  // stagger order lines
+  const lines = [...document.querySelectorAll('[data-line]')];
+  const linesObs = new IntersectionObserver(es=>es.forEach(en=>{
+    if(en.isIntersecting){
+      lines.forEach((l,i)=>setTimeout(()=>l.classList.add('in'), 120 + i*140));
+      linesObs.disconnect();
+    }
+  }),{threshold:.2});
+  if(lines[0]) linesObs.observe(lines[0]);
+
+  // scroll-driven descent
+  const body=document.body;
+  const STOPS = [
+    { t:0.00, a:"#1c1f42", b:"#0c0d22", c:"#060611", glow:"rgba(233,201,138,.13)", fathom:0 },
+    { t:0.18, a:"#22214a", b:"#0e0e26", c:"#070612", glow:"rgba(233,201,138,.13)", fathom:1 },
+    { t:0.34, a:"#2f2660", b:"#13102f", c:"#08071a", glow:"rgba(233,201,138,.14)", fathom:2 },
+    { t:0.52, a:"#3a2566", b:"#170f30", c:"#0a0820", glow:"rgba(233,201,138,.15)", fathom:3 },
+    { t:0.70, a:"#45225e", b:"#1a0e2c", c:"#0c0820", glow:"rgba(233,201,138,.16)", fathom:4 },
+    { t:0.86, a:"#5a2e1a", b:"#1f0f08", c:"#0b0504", glow:"rgba(255,205,130,.22)", fathom:5 },
+    { t:1.00, a:"#5a2e1a", b:"#1f0f08", c:"#0b0504", glow:"rgba(255,205,130,.22)", fathom:5 }
+  ];
+  function lerpHex(h1,h2,t){
+    const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+    const [a,b,c]=p(h1),[d,e,f]=p(h2);
+    const r=Math.round(a+(d-a)*t),g=Math.round(b+(e-b)*t),bl=Math.round(c+(f-c)*t);
+    return "#"+[r,g,bl].map(x=>x.toString(16).padStart(2,'0')).join('');
+  }
+  function lerpRGBA(r1,r2,t){
+    const p=s=>s.match(/[\d.]+/g).map(Number);
+    const [a,b,c,d]=p(r1),[e,f,g,h]=p(r2);
+    return `rgba(${Math.round(a+(e-a)*t)},${Math.round(b+(f-b)*t)},${Math.round(c+(g-c)*t)},${(d+(h-d)*t).toFixed(3)})`;
+  }
+  function applyScroll(){
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const t = Math.max(0, Math.min(1, scrollY / max));
+    let i=0;
+    for(let k=0;k<STOPS.length-1;k++){ if(t>=STOPS[k].t && t<=STOPS[k+1].t){ i=k; break; }}
+    const a=STOPS[i], b=STOPS[i+1] || STOPS[i];
+    const lt = b.t===a.t ? 0 : (t-a.t)/(b.t-a.t);
+    body.style.setProperty('--bg-a', lerpHex(a.a, b.a, lt));
+    body.style.setProperty('--bg-b', lerpHex(a.b, b.b, lt));
+    body.style.setProperty('--bg-c', lerpHex(a.c, b.c, lt));
+    body.style.setProperty('--glow', lerpRGBA(a.glow, b.glow, lt));
+    const fath = Math.round(a.fathom + (b.fathom-a.fathom)*lt);
+    document.getElementById('fathom').textContent = fath;
+    const pct = Math.round(t*100);
+    document.getElementById('pct').textContent = pct + "%";
+    document.getElementById('fill').style.height = pct + "%";
+  }
+  let ticking=false;
+  addEventListener('scroll',()=>{
+    if(!ticking){ requestAnimationFrame(()=>{ applyScroll(); ticking=false; }); ticking=true; }
+  },{passive:true});
+  addEventListener('resize',applyScroll);
+  applyScroll();
+
+  // hamburger nav
+  (function(){
+    const btn=document.getElementById('hbtn'), panel=document.getElementById('hpanel'), overlay=document.getElementById('hoverlay');
+    function toggle(){ btn.classList.toggle('open'); panel.classList.toggle('open'); overlay.classList.toggle('open'); }
+    function close(){ btn.classList.remove('open'); panel.classList.remove('open'); overlay.classList.remove('open'); }
+    btn.addEventListener('click', toggle);
+    overlay.addEventListener('click', close);
+    panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+  })();
+</script>
+</body>
+</html>
