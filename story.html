@@ -136,6 +136,14 @@
   .whisper{font-family:var(--display); font-style:italic; color:var(--cream-faint); font-size:16px}
 
   /* hero */
+  /* hook steps */
+  .hook-steps{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; width:100%; max-width:720px; margin:40px auto 0}
+  .hook-step{padding:20px 18px; border:1px solid var(--card-line); border-radius:14px; background:rgba(255,255,255,.025); text-align:left; transition:.3s var(--ease)}
+  .hook-step:hover{border-color:var(--line); transform:translateY(-3px)}
+  .hook-num{font-family:var(--display); font-weight:300; font-size:24px; color:rgba(233,201,138,.25); margin-bottom:8px}
+  .hook-label{font-family:var(--display); font-weight:500; font-size:16px; color:var(--cream); margin-bottom:6px}
+  .hook-step p{color:var(--cream-dim); font-size:13px; font-weight:300; line-height:1.5}
+
   #hero{min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:160px 0 100px}
   #hero .wrap{text-align:center}
   #hero .kicker{justify-content:center}
@@ -253,6 +261,7 @@
   .foot-bot a:hover{color:var(--gold-hi)}
 
   @media (max-width:900px){
+    .hook-steps{grid-template-columns:1fr; gap:14px}
     header{padding:16px 20px}
     .wordmark{font-size:11px; letter-spacing:.32em}
     .hbtn{top:14px; right:16px; width:44px; height:44px}
@@ -325,14 +334,33 @@
 
     <section id="hero">
       <div class="wrap">
-        <div class="kicker reveal">Concierge provisioning &middot; Newport Beach &amp; Coastal SoCal</div>
-        <h1 class="reveal">Arrive to a home<br><span class="yours-wrap">that's <em>already&nbsp;yours.</em></span></h1>
-        <div class="row reveal">
-          <a href="/order" class="btn primary">Start your experience
-            <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 7h13M11 2l4 5-4 5"/></svg>
-          </a>
+        <div class="kicker reveal" style="justify-content:center">
+          <span style="width:34px;height:1px;background:var(--gold)"></span>
+          How it works
+          <span style="width:34px;height:1px;background:var(--gold)"></span>
         </div>
-        <p class="whisper reveal" style="margin-top:24px">Have your place stocked and ready before you even arrive. Build your custom order and we'll send a quote within 24 hours.</p>
+        <h2 class="reveal" style="font-size:clamp(32px,5vw,56px); max-width:16ch; margin:0 auto">Tell us what you want. <em>We'll handle the rest.</em></h2>
+        <div class="hook-steps reveal">
+          <div class="hook-step">
+            <div class="hook-num">1</div>
+            <div class="hook-label">Build your list</div>
+            <p>Pick items across a few categories — breakfast, snacks, meals, and more.</p>
+          </div>
+          <div class="hook-step">
+            <div class="hook-num">2</div>
+            <div class="hook-label">Get your quote</div>
+            <p>We'll send one all-in price within 24 hours. No surprises.</p>
+          </div>
+          <div class="hook-step">
+            <div class="hook-num">3</div>
+            <div class="hook-label">Arrive stocked</div>
+            <p>Everything unpacked, chilled, and waiting before you walk in.</p>
+          </div>
+        </div>
+        <div class="row reveal" style="justify-content:center; margin-top:48px">
+          <a href="/order" class="btn primary">Build your order &rarr;</a>
+        </div>
+        <p class="whisper reveal" style="margin-top:20px">Takes about 3 minutes. No payment until you approve the quote.</p>
       </div>
       <div class="cue">Descend</div>
     </section>
@@ -476,7 +504,6 @@
     </div>
     <div class="foot-bot">
       <span>&copy; Nova Concierge &middot; MMXXVI</span>
-      <span>Newport Beach, CA</span>
       <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>
     </div>
   </footer>

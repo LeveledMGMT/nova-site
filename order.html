@@ -92,6 +92,22 @@
   .screen + .screen::before{content:""; display:block; position:absolute; left:5vw; right:5vw; top:0;
     height:1px; background:linear-gradient(90deg,transparent,var(--card-line) 30%,var(--card-line) 70%,transparent)}
 
+  /* hook steps */
+  .hook-steps{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; width:100%; max-width:720px; margin-top:8px}
+  .hook-step{padding:20px 18px; border:1px solid var(--card-line); border-radius:14px; background:rgba(255,255,255,.025); text-align:left; transition:.3s var(--ease)}
+  .hook-step:hover{border-color:var(--line); transform:translateY(-3px)}
+  .hook-num{font-family:var(--display); font-weight:300; font-size:24px; color:rgba(233,201,138,.25); margin-bottom:8px}
+  .hook-label{font-family:var(--display); font-weight:500; font-size:16px; color:var(--cream); margin-bottom:6px}
+  .hook-step p{color:var(--cream-dim); font-size:13px; font-weight:300; line-height:1.5}
+
+  /* checkbox styling */
+  input[type="checkbox"]{appearance:none; -webkit-appearance:none; width:18px; height:18px; border:1.5px solid var(--card-line);
+    border-radius:5px; background:rgba(0,0,0,.3); cursor:pointer; position:relative; transition:.2s; flex-shrink:0}
+  input[type="checkbox"]:checked{background:var(--gold); border-color:var(--gold)}
+  input[type="checkbox"]:checked::after{content:""; position:absolute; left:5px; top:2px; width:5px; height:9px;
+    border:solid #2a1c06; border-width:0 2px 2px 0; transform:rotate(45deg)}
+  input[type="checkbox"]:hover{border-color:var(--gold)}
+
   .kicker{font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--gold);
     display:flex; align-items:center; gap:12px; margin-bottom:22px}
   .kicker::before{content:""; width:34px; height:1px; background:var(--gold)}
@@ -282,6 +298,7 @@
   .hoverlay.open{opacity:1; pointer-events:auto}
 
   @media (max-width:720px){
+    .hook-steps{grid-template-columns:1fr; gap:14px}
     #rail{flex-direction:row; width:auto; right:0; bottom:auto; height:54px; top:0; gap:14px; justify-content:space-between; padding:0 16px; border-right:none; border-bottom:1px solid var(--line)}
     #rail .cap,#rail .stk,#ticks{display:none}
     #rail .mark{position:static; transform:none; font-size:11px; letter-spacing:.38em; order:-1}
@@ -328,13 +345,34 @@
   <main id="stage">
 
     <section id="sec-hook" class="screen" data-screen="hook" data-fathom="0">
-      <div class="inner reveal">
-        <div class="kicker">Concierge provisioning</div>
-        <h1>Arrive to a home<br>that's <em>already yours.</em></h1>
-        <div class="row">
-          <a class="btn primary" href="#sec-setup">Start your experience ↓</a>
+      <div class="inner reveal" style="text-align:center; display:flex; flex-direction:column; align-items:center">
+        <div class="kicker" style="justify-content:center">
+          <span style="width:34px;height:1px;background:var(--gold)"></span>
+          How it works
+          <span style="width:34px;height:1px;background:var(--gold)"></span>
         </div>
-        <p class="whisper" style="margin-top:24px">Have your place stocked and ready before you even arrive. Build your custom order and we'll send a quote within 24 hours.</p>
+        <h2 style="max-width:16ch; margin-bottom:40px">Tell us what you want. <em>We'll handle the rest.</em></h2>
+        <div class="hook-steps">
+          <div class="hook-step">
+            <div class="hook-num">1</div>
+            <div class="hook-label">Build your list</div>
+            <p>Pick items across a few categories — breakfast, snacks, meals, and more.</p>
+          </div>
+          <div class="hook-step">
+            <div class="hook-num">2</div>
+            <div class="hook-label">Get your quote</div>
+            <p>We'll send one all-in price within 24 hours. No surprises.</p>
+          </div>
+          <div class="hook-step">
+            <div class="hook-num">3</div>
+            <div class="hook-label">Arrive stocked</div>
+            <p>Everything unpacked, chilled, and waiting before you walk in.</p>
+          </div>
+        </div>
+        <div class="row" style="justify-content:center; margin-top:48px">
+          <a class="btn primary" href="#sec-setup">Build your order &darr;</a>
+        </div>
+        <p class="whisper" style="margin-top:20px">Takes about 3 minutes. No payment until you approve the quote.</p>
       </div>
       <a class="cue" href="#sec-setup">Scroll</a>
     </section>
@@ -433,7 +471,7 @@
         <h2>It's <em>handled.</em></h2>
         <p class="lede" id="done-lede"></p>
         <p class="whisper" style="margin-top:18px">We'll send a photo of the loaded fridge before you arrive. That part never gets old.</p>
-        <div class="row"><button class="btn ghost" id="restart-btn">Start another home</button></div>
+        <div class="row"><button class="btn primary" id="receipt-btn" style="display:none">Save receipt</button><button class="btn ghost" id="restart-btn">Start another home</button></div>
       </div>
     </section>
 
@@ -666,7 +704,38 @@ function wireAll(){
   }
 
   // submit
-  document.getElementById('submit-btn').addEventListener('click',()=>{
+  document.getElementById('submit-btn').addEventListener('click',async()=>{
+    const btn=document.getElementById('submit-btn');
+    btn.disabled=true; btn.textContent='Sending...';
+
+    // gather all items into flat array
+    const allItems=[];
+    DEPTHS.forEach(d=>{
+      (S.items[d.id]||[]).forEach(o=>{
+        allItems.push({qty:o.qty,item:o.item,brand:o.brandAny?'any':o.brand,size:o.size,sub:o.sub,note:o.note});
+      });
+    });
+
+    try{
+      const res = await fetch('/api/submit',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          type:'order',
+          name:S.name, phone:S.phone, prop:S.prop, code:S.code,
+          dates:S.dates, checkinTime:S.checkinTime,
+          allergies:S.allergies, allergyNone:S.allergyNone, sub:S.sub,
+          items:allItems, extra:S.extra, confirm:S.confirm
+        })
+      });
+      const result = await res.json();
+      // store receipt for download
+      if(result.receipt){
+        window._novaReceipt = result.receipt;
+        document.getElementById('receipt-btn').style.display='';
+      }
+    }catch(e){ console.error('Submit error:',e); }
+
     const done=document.getElementById('sec-done');
     document.getElementById('done-lede').textContent =
       `We've got your list${S.name?`, ${S.name.split(" ")[0]}`:''}. You'll get one text with your all-in price shortly \u2014 say the word, tap to pay, and walk into a home that's already yours.`;
@@ -674,6 +743,14 @@ function wireAll(){
     setTimeout(()=>done.scrollIntoView({behavior:'smooth',block:'start'}), 30);
   });
   document.getElementById('restart-btn').addEventListener('click',()=>location.reload());
+  document.getElementById('receipt-btn').addEventListener('click',()=>{
+    if(!window._novaReceipt) return;
+    const blob = new Blob([window._novaReceipt], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download='nova-order-receipt.html'; a.click();
+    URL.revokeObjectURL(url);
+  });
 }
 wireAll();
 

@@ -280,7 +280,7 @@
   const formWrap = document.getElementById('formWrap');
   const successMsg = document.getElementById('successMsg');
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async(e) => {
     e.preventDefault();
     const data = new FormData(form);
     const name = data.get('name').trim();
@@ -294,8 +294,23 @@
     if (!message) { hint.textContent = 'Please enter a message.'; return; }
     hint.textContent = '';
 
-    // TODO: Wire to backend (Cloudflare Workers, etc.)
-    // For now, show success state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true; submitBtn.textContent = 'Sending...';
+
+    try {
+      await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact',
+          name, email,
+          phone: data.get('phone') || '',
+          contactType: type,
+          message
+        })
+      });
+    } catch(e) { console.error('Submit error:', e); }
+
     formWrap.style.display = 'none';
     successMsg.classList.add('show');
   });
