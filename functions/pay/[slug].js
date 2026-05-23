@@ -90,9 +90,8 @@ function buildPayPage(d) {
     + '<a href="/" class="logo">NOVA<span>.</span></a>'
     + '<div class="greeting">Hi ' + esc(d.guestName.split(' ')[0]) + ', your order is <em>ready.</em></div>'
     + '<p class="sub">Review everything below. If it looks right, tap pay to lock it in. We handle the rest.</p>'
-    + '<div class="info">'
+    + '<div class="info" style="grid-template-columns:1fr">'
     + '<div class="info-box"><div class="label">Check-in</div><div class="val">' + esc(d.checkin) + ' at ' + esc(d.checkinTime) + '</div></div>'
-    + '<div class="info-box"><div class="label">If unavailable</div><div class="val">' + esc(d.subRule) + '</div></div>'
     + '</div>'
     + '<div class="order-wrap" id="orderWrap">'
     + '<button class="order-toggle" onclick="document.getElementById(\'orderWrap\').classList.toggle(\'open\')">'
@@ -100,6 +99,11 @@ function buildPayPage(d) {
     + '<span class="ot-right">+</span>'
     + '</button>'
     + '<div class="order-body">'
+    + '<div class="info" style="margin-bottom:16px">'
+    + (d.allergies && d.allergies !== 'None' ? '<div class="info-box"><div class="label">Allergies</div><div class="val">' + esc(d.allergies) + '</div></div>' : '')
+    + '<div class="info-box"><div class="label">Default sub rule</div><div class="val">' + esc(d.subRule) + '</div></div>'
+    + (d.property ? '<div class="info-box"><div class="label">Property</div><div class="val">' + esc(d.property) + '</div></div>' : '')
+    + '</div>'
     + itemRows
     + (d.notes ? '<div class="info-box" style="margin-top:12px;margin-bottom:16px"><div class="label">Notes</div><div class="val">' + esc(d.notes) + '</div></div>' : '')
     + '</div></div>'
