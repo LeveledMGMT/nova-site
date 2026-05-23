@@ -141,31 +141,43 @@
     <h2>Generate <em>pay page.</em></h2>
     <p>Fill in the details below. This creates a branded page you can text to the guest.</p>
 
+    <div class="field"><label>Order ID</label>
+      <div style="display:flex;gap:8px">
+        <input id="f-orderId" placeholder="NOV-ABC123" style="flex:1">
+        <button id="pullBtn" style="padding:10px 20px;border:1px solid var(--gold);background:rgba(233,201,138,.1);color:var(--gold-hi);border-radius:12px;cursor:pointer;font-family:var(--ui);font-size:13px;font-weight:600;transition:.2s;white-space:nowrap">Pull order</button>
+      </div>
+      <div id="pullStatus" style="font-size:12px;color:var(--cream-faint);margin-top:6px;min-height:18px"></div>
+    </div>
+
+    <div style="border-top:1px solid var(--card-line);margin:20px 0;opacity:.5"></div>
+
     <div class="row2">
-      <div class="field"><label>Guest name</label><input id="f-name" placeholder="Jordan Smith"></div>
-      <div class="field"><label>Order ID</label><input id="f-orderId" placeholder="NOV-ABC123"></div>
+      <div class="field"><label>Guest name</label><input id="f-name" placeholder="Auto-filled" readonly style="opacity:.7"></div>
+      <div class="field"><label>Phone</label><input id="f-phone" placeholder="Auto-filled" readonly style="opacity:.7"></div>
     </div>
     <div class="row2">
-      <div class="field"><label>Property / address</label><input id="f-property" placeholder="The Balboa House"></div>
-      <div class="field"><label>Partner code</label><input id="f-code" placeholder="leveled"></div>
+      <div class="field"><label>Property / address</label><input id="f-property" placeholder="Auto-filled" readonly style="opacity:.7"></div>
+      <div class="field"><label>Partner code</label><input id="f-code" placeholder="Auto-filled" readonly style="opacity:.7"></div>
     </div>
     <div class="row2">
-      <div class="field"><label>Check-in date</label><input id="f-checkin" type="date"></div>
-      <div class="field"><label>Check-in time</label><input id="f-time" placeholder="4:00 PM"></div>
+      <div class="field"><label>Check-in date</label><input id="f-checkin" placeholder="Auto-filled" readonly style="opacity:.7"></div>
+      <div class="field"><label>Check-in time</label><input id="f-time" placeholder="Auto-filled" readonly style="opacity:.7"></div>
     </div>
     <div class="row2">
-      <div class="field"><label>Allergies</label><input id="f-allergies" placeholder="None"></div>
-      <div class="field"><label>Default sub rule</label><input id="f-sub" placeholder="Get the closest thing"></div>
+      <div class="field"><label>Allergies</label><input id="f-allergies" placeholder="Auto-filled" readonly style="opacity:.7"></div>
+      <div class="field"><label>Default sub rule</label><input id="f-sub" placeholder="Auto-filled" readonly style="opacity:.7"></div>
     </div>
+    <div class="field"><label>Notes from guest</label><textarea id="f-notes" rows="2" placeholder="Auto-filled" readonly style="opacity:.7"></textarea></div>
+
+    <label style="display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:10px;font-weight:500;margin-top:20px">Items (auto-filled from order)</label>
+    <div class="items-list" id="itemsList"></div>
+
+    <div style="border-top:1px solid var(--card-line);margin:20px 0;opacity:.5"></div>
+
     <div class="row2">
       <div class="field"><label>Total ($)</label><input id="f-total" type="number" placeholder="285"></div>
       <div class="field"><label>Stripe link</label><input id="f-stripe" placeholder="https://buy.stripe.com/..."></div>
     </div>
-    <div class="field"><label>Notes from guest</label><textarea id="f-notes" rows="2" placeholder="Any special requests..."></textarea></div>
-
-    <label style="display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:10px;font-weight:500;margin-top:20px">Items</label>
-    <div class="items-list" id="itemsList"></div>
-    <button class="add-item-btn" id="addItemBtn">+ Add item</button>
 
     <div class="hint" id="genHint" style="margin-top:16px"></div>
     <button class="gen-btn" id="genBtn">Generate pay page</button>
@@ -177,6 +189,44 @@
       <div class="copied" id="copiedMsg"></div>
     </div>
   </div>
+
+  <!-- Step 5 — Fulfillment -->
+  <div class="step">
+    <div class="step-num">5</div>
+    <h2>Fulfill the <em>order.</em></h2>
+    <p>Once the guest pays, follow this checklist:</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
+      <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)">
+        <input type="checkbox" style="margin-top:3px;flex-shrink:0">
+        <div><strong style="color:var(--cream)">Confirm payment received</strong><br><span style="color:var(--cream-dim);font-size:13px">Check Stripe dashboard for the payment. Match the amount to the order.</span></div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)">
+        <input type="checkbox" style="margin-top:3px;flex-shrink:0">
+        <div><strong style="color:var(--cream)">Shop the order</strong><br><span style="color:var(--cream-dim);font-size:13px">Purchase all items. Follow brand, size, and quantity exactly. If an item is unavailable, follow the guest's sub rule (check the order for per-item overrides).</span></div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)">
+        <input type="checkbox" style="margin-top:3px;flex-shrink:0">
+        <div><strong style="color:var(--cream)">Missing items? Refund the guest.</strong><br><span style="color:var(--cream-dim);font-size:13px">If you can't get something and the sub rule says "skip" or "text me" and they decline, issue a partial refund through Stripe for those items. Always refund what you can't deliver.</span></div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)">
+        <input type="checkbox" style="margin-top:3px;flex-shrink:0">
+        <div><strong style="color:var(--cream)">Stock the home</strong><br><span style="color:var(--cream-dim);font-size:13px">Coordinate access with the property manager or partner code. Unpack everything in the right spots. Chill what needs chilling. Organize neatly.</span></div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)">
+        <input type="checkbox" style="margin-top:3px;flex-shrink:0">
+        <div><strong style="color:var(--cream)">Leave a handwritten note</strong><br><span style="color:var(--cream-dim);font-size:13px">Write a short welcome note using the guest's first name. Keep it warm and personal. Leave it on the counter near the fridge.</span></div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)">
+        <input type="checkbox" style="margin-top:3px;flex-shrink:0">
+        <div><strong style="color:var(--cream)">Take a photo of the stocked fridge</strong><br><span style="color:var(--cream-dim);font-size:13px">Open the fridge, take a clean photo showing everything stocked. This is the money shot.</span></div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:12px 14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)">
+        <input type="checkbox" style="margin-top:3px;flex-shrink:0">
+        <div><strong style="color:var(--cream)">Text the guest</strong><br><span style="color:var(--cream-dim);font-size:13px">Send the fridge photo to the guest's phone number. Something like: "Hi [name]! Your home is stocked and ready. Here's a look inside. Welcome home!" Wait for their approval.</span></div>
+      </label>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -203,44 +253,68 @@ if (sessionStorage.getItem('nova-auth')) {
   document.getElementById('dashboard').classList.add('show');
 }
 
-// Items builder
+// Items display (read-only, auto-filled from order)
 var items = [];
+var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx2LMlFr89hLCOcLNM3c02vQJazVaaM_xcmhPir1N7Eanb3Jtj8-gDxYX3XyeOmAt_C/exec';
+
 function renderItems() {
   var list = document.getElementById('itemsList');
   list.innerHTML = '';
-  items.forEach(function(it, idx) {
+  if (!items.length) {
+    list.innerHTML = '<div style="color:var(--cream-faint);font-style:italic;font-size:14px;padding:8px 0">No items yet. Pull an order above.</div>';
+    return;
+  }
+  items.forEach(function(it) {
     var row = document.createElement('div');
-    row.className = 'item-row';
-    row.innerHTML = '<input placeholder="Qty" value="' + (it.qty || 1) + '" data-idx="' + idx + '" data-field="qty" style="text-align:center">'
-      + '<input placeholder="Item name" value="' + esc(it.item || '') + '" data-idx="' + idx + '" data-field="item">'
-      + '<input placeholder="Brand" value="' + esc(it.brand || '') + '" data-idx="' + idx + '" data-field="brand">'
-      + '<input placeholder="Size" value="' + esc(it.size || '') + '" data-idx="' + idx + '" data-field="size">'
-      + '<button class="rm-btn" data-idx="' + idx + '">&times;</button>';
+    row.style.cssText = 'display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid rgba(233,201,138,.2);border-radius:10px;background:rgba(233,201,138,.03);margin-bottom:6px';
+    row.innerHTML = '<span style="font-weight:700;color:var(--gold);min-width:30px">' + esc(String(it.qty)) + 'x</span>'
+      + '<span style="color:var(--gold-hi);font-weight:500">' + esc(it.item) + '</span>'
+      + '<span style="color:var(--cream-dim);font-size:13px;margin-left:auto">' + esc(it.brand || 'Any') + ' | ' + esc(it.size || '-') + '</span>';
     list.appendChild(row);
   });
-  // wire events
-  list.querySelectorAll('input').forEach(function(inp) {
-    inp.addEventListener('input', function() {
-      var i = parseInt(inp.dataset.idx);
-      items[i][inp.dataset.field] = inp.value;
-    });
-  });
-  list.querySelectorAll('.rm-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      items.splice(parseInt(btn.dataset.idx), 1);
-      renderItems();
-    });
-  });
 }
-
-document.getElementById('addItemBtn').addEventListener('click', function() {
-  items.push({ qty: 1, item: '', brand: '', size: '', sub: '', note: '' });
-  renderItems();
-});
-
-// add one empty row to start
-items.push({ qty: 1, item: '', brand: '', size: '', sub: '', note: '' });
 renderItems();
+
+// Pull order from Google Sheet
+document.getElementById('pullBtn').addEventListener('click', async function() {
+  var orderId = document.getElementById('f-orderId').value.trim();
+  var status = document.getElementById('pullStatus');
+  if (!orderId) { status.textContent = 'Enter an Order ID first.'; status.style.color = 'var(--warn)'; return; }
+
+  status.textContent = 'Pulling order...'; status.style.color = 'var(--cream-faint)';
+  document.getElementById('pullBtn').disabled = true;
+
+  try {
+    var res = await fetch(SHEETS_URL + '?orderId=' + encodeURIComponent(orderId));
+    var text = await res.text();
+    var data = JSON.parse(text);
+
+    if (data.error) {
+      status.textContent = 'Order not found. Check the ID.'; status.style.color = 'var(--warn)';
+      document.getElementById('pullBtn').disabled = false;
+      return;
+    }
+
+    // Auto-fill all fields
+    document.getElementById('f-name').value = data.name || '';
+    document.getElementById('f-phone').value = data.phone || '';
+    document.getElementById('f-property').value = data.property || '';
+    document.getElementById('f-code').value = data.code || '';
+    document.getElementById('f-checkin').value = data.checkin || '';
+    document.getElementById('f-time').value = data.checkinTime || '';
+    document.getElementById('f-allergies').value = data.allergies || 'None';
+    document.getElementById('f-sub').value = data.subRule || '';
+    document.getElementById('f-notes').value = data.notes || '';
+
+    items = data.items || [];
+    renderItems();
+
+    status.textContent = 'Order pulled. ' + items.length + ' items loaded.'; status.style.color = 'var(--gold)';
+  } catch(err) {
+    status.textContent = 'Error pulling order: ' + err.message; status.style.color = 'var(--warn)';
+  }
+  document.getElementById('pullBtn').disabled = false;
+});
 
 // Generate
 document.getElementById('genBtn').addEventListener('click', async function() {
