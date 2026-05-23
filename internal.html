@@ -56,7 +56,7 @@
 
   /* items builder */
   .items-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-  .item-row{display:grid;grid-template-columns:50px 1fr 1fr 1fr auto;gap:8px;align-items:end}
+  .item-row{display:grid;grid-template-columns:50px 1fr 1fr 1fr 1fr auto;gap:8px;align-items:end}
   .item-row input{padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid var(--card-line);color:var(--cream);
     border-radius:8px;font-family:var(--ui);font-size:13px}
   .item-row input:focus{outline:none;border-color:var(--gold)}
@@ -272,6 +272,7 @@ function renderItems() {
       + '<input placeholder="Item" value="' + esc(it.item || '') + '" data-idx="' + idx + '" data-field="item">'
       + '<input placeholder="Brand" value="' + esc(it.brand || '') + '" data-idx="' + idx + '" data-field="brand">'
       + '<input placeholder="Size" value="' + esc(it.size || '') + '" data-idx="' + idx + '" data-field="size">'
+      + '<input placeholder="Sub rule" value="' + esc(it.sub || '') + '" data-idx="' + idx + '" data-field="sub">'
       + '<button class="rm-btn" data-idx="' + idx + '">&times;</button>';
     list.appendChild(row);
   });
