@@ -1,5 +1,5 @@
 export async function onRequestPost(context) {
-  const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1507453072576872488/p5U8HYvK59lvg2lF4TscGmsnWGB9Wa3Re5eK4k1bqHrJP1u972_3yK1g3Ixm6FL6LIOm";
+  const DISCORD_WEBHOOK = context.env.DISCORD_WEBHOOK;
 
   try {
     const data = await context.request.json();
@@ -118,7 +118,7 @@ export async function onRequestPost(context) {
     }
 
     // Send to Google Sheets (if configured)
-    const SHEETS_URL = "https://script.google.com/macros/s/AKfycbx2LMlFr89hLCOcLNM3c02vQJazVaaM_xcmhPir1N7Eanb3Jtj8-gDxYX3XyeOmAt_C/exec";
+    const SHEETS_URL = context.env.GOOGLE_SHEETS_URL;
     if (SHEETS_URL) {
       try {
         const sheetsData = { ...data };

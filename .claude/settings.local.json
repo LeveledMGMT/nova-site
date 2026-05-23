@@ -24,7 +24,9 @@
       "Bash(gh auth:*)",
       "Bash(gh repo:*)",
       "Bash(npx wrangler:*)",
-      "Bash(rm _redirects:*)"
+      "Bash(rm _redirects:*)",
+      "mcp__plugin_supabase_supabase__list_projects",
+      "mcp__plugin_supabase_supabase__list_organizations"
     ]
   }
 }
