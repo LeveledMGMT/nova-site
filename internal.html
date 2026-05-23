@@ -169,8 +169,9 @@
     </div>
     <div class="field"><label>Notes from guest</label><textarea id="f-notes" rows="2" placeholder="Auto-filled" readonly style="opacity:.7"></textarea></div>
 
-    <label style="display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:10px;font-weight:500;margin-top:20px">Items (auto-filled from order)</label>
+    <label style="display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:10px;font-weight:500;margin-top:20px">Items <span style="color:var(--cream-dim);font-weight:300;letter-spacing:0;text-transform:none">— edit as needed</span></label>
     <div class="items-list" id="itemsList"></div>
+    <button class="add-item-btn" id="addItemBtn">+ Add item</button>
 
     <div style="border-top:1px solid var(--card-line);margin:20px 0;opacity:.5"></div>
 
@@ -253,7 +254,7 @@ if (sessionStorage.getItem('nova-auth')) {
   document.getElementById('dashboard').classList.add('show');
 }
 
-// Items display (read-only, auto-filled from order)
+// Items — editable
 var items = [];
 var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxt8KvabeitLpMp-rASjcpz_zErSuRPwEEOrgL6Qcq_T8ZKEt7k0PHT41UqLRLUjyMa/exec';
 
@@ -261,19 +262,37 @@ function renderItems() {
   var list = document.getElementById('itemsList');
   list.innerHTML = '';
   if (!items.length) {
-    list.innerHTML = '<div style="color:var(--cream-faint);font-style:italic;font-size:14px;padding:8px 0">No items yet. Pull an order above.</div>';
+    list.innerHTML = '<div style="color:var(--cream-faint);font-style:italic;font-size:14px;padding:8px 0">No items yet. Pull an order or add manually.</div>';
     return;
   }
-  items.forEach(function(it) {
+  items.forEach(function(it, idx) {
     var row = document.createElement('div');
-    row.style.cssText = 'display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid rgba(233,201,138,.2);border-radius:10px;background:rgba(233,201,138,.03);margin-bottom:6px';
-    row.innerHTML = '<span style="font-weight:700;color:var(--gold);min-width:30px">' + esc(String(it.qty)) + 'x</span>'
-      + '<span style="color:var(--gold-hi);font-weight:500">' + esc(it.item) + '</span>'
-      + '<span style="color:var(--cream-dim);font-size:13px;margin-left:auto">' + esc(it.brand || 'Any') + ' | ' + esc(it.size || '-') + '</span>';
+    row.className = 'item-row';
+    row.innerHTML = '<input placeholder="Qty" value="' + (it.qty || 1) + '" data-idx="' + idx + '" data-field="qty" style="text-align:center">'
+      + '<input placeholder="Item" value="' + esc(it.item || '') + '" data-idx="' + idx + '" data-field="item">'
+      + '<input placeholder="Brand" value="' + esc(it.brand || '') + '" data-idx="' + idx + '" data-field="brand">'
+      + '<input placeholder="Size" value="' + esc(it.size || '') + '" data-idx="' + idx + '" data-field="size">'
+      + '<button class="rm-btn" data-idx="' + idx + '">&times;</button>';
     list.appendChild(row);
+  });
+  list.querySelectorAll('input').forEach(function(inp) {
+    inp.addEventListener('input', function() {
+      items[parseInt(inp.dataset.idx)][inp.dataset.field] = inp.value;
+    });
+  });
+  list.querySelectorAll('.rm-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      items.splice(parseInt(btn.dataset.idx), 1);
+      renderItems();
+    });
   });
 }
 renderItems();
+
+document.getElementById('addItemBtn').addEventListener('click', function() {
+  items.push({ qty: 1, item: '', brand: '', size: '', sub: '', note: '' });
+  renderItems();
+});
 
 // Pull order from Google Sheet
 document.getElementById('pullBtn').addEventListener('click', async function() {
