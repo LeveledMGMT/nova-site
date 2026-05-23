@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova — Internal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..600&family=Hanken+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#e9c98a;--gold-hi:#fff3d6;--gold-deep:#b78a3f;--cream:#efeaf2;--cream-dim:#c2bcd4;--cream-faint:#857f96;
+    --bg:#060611;--card:rgba(255,255,255,.035);--card-line:rgba(243,236,221,.10);
+    --display:"Fraunces",Georgia,serif;--ui:"Hanken Grotesk",-apple-system,sans-serif;--mono:"JetBrains Mono",monospace;
+    --ease:cubic-bezier(.22,.61,.36,1);--warn:#ffb4a0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+  body{font-family:var(--ui);color:var(--cream);background:var(--bg);-webkit-font-smoothing:antialiased;min-height:100vh;line-height:1.6}
+
+  .gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px}
+  .gate-box{max-width:360px;width:100%;text-align:center}
+  .gate-box h1{font-family:var(--display);font-weight:300;font-size:28px;margin-bottom:8px}
+  .gate-box h1 em{font-style:italic;color:var(--gold-hi)}
+  .gate-box p{color:var(--cream-faint);font-size:14px;margin-bottom:24px}
+  .gate-input{width:100%;padding:15px 16px;background:rgba(0,0,0,.3);border:1px solid var(--card-line);color:var(--cream);
+    border-radius:12px;font-family:var(--ui);font-size:16px;text-align:center;letter-spacing:.1em}
+  .gate-input:focus{outline:none;border-color:var(--gold)}
+  .gate-input::placeholder{color:var(--cream-faint)}
+  .gate-err{color:var(--warn);font-size:13px;margin-top:12px;min-height:20px}
+
+  .dashboard{display:none;max-width:720px;margin:0 auto;padding:40px 28px 80px}
+  .dashboard.show{display:block}
+  .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+  .dash-header h1{font-family:var(--display);font-weight:300;font-size:24px}
+  .dash-header h1 em{font-style:italic;color:var(--gold-hi)}
+  .dash-header .badge{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);border:1px solid rgba(233,201,138,.2);border-radius:100px;padding:6px 12px}
+
+  /* steps */
+  .step{border:1px solid var(--card-line);border-radius:18px;padding:28px;margin-bottom:20px;background:var(--card);position:relative}
+  .step-num{position:absolute;top:28px;right:28px;font-family:var(--display);font-weight:300;font-size:32px;color:rgba(233,201,138,.15)}
+  .step h2{font-family:var(--display);font-weight:400;font-size:20px;margin-bottom:6px}
+  .step h2 em{font-style:italic;color:var(--gold-hi)}
+  .step p{color:var(--cream-dim);font-size:14px;font-weight:300;margin-bottom:16px}
+  .step a.ext{color:var(--gold);text-decoration:underline;text-underline-offset:3px;font-size:14px}
+
+  /* form fields */
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:6px;font-weight:500}
+  .field input,.field textarea{width:100%;padding:14px 16px;background:rgba(0,0,0,.3);border:1px solid var(--card-line);
+    color:var(--cream);border-radius:12px;font-family:var(--ui);font-size:15px;resize:none}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--gold);background:rgba(0,0,0,.4)}
+  .field input::placeholder,.field textarea::placeholder{color:var(--cream-faint)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  /* items builder */
+  .items-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+  .item-row{display:grid;grid-template-columns:50px 1fr 1fr 1fr auto;gap:8px;align-items:end}
+  .item-row input{padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid var(--card-line);color:var(--cream);
+    border-radius:8px;font-family:var(--ui);font-size:13px}
+  .item-row input:focus{outline:none;border-color:var(--gold)}
+  .item-row input::placeholder{color:var(--cream-faint)}
+  .rm-btn{width:32px;height:38px;border:none;background:rgba(255,180,160,.1);color:var(--warn);border-radius:8px;
+    cursor:pointer;font-size:16px;transition:.2s}
+  .rm-btn:hover{background:rgba(255,180,160,.2)}
+  .add-item-btn{background:none;border:1px dashed rgba(233,201,138,.2);color:var(--cream-faint);padding:10px;
+    border-radius:10px;cursor:pointer;font-size:13px;width:100%;transition:.2s}
+  .add-item-btn:hover{border-color:var(--gold);color:var(--gold-hi)}
+
+  .gen-btn{width:100%;padding:18px;border:none;border-radius:100px;background:linear-gradient(180deg,var(--gold-hi),var(--gold));
+    color:#2a1c06;font-family:var(--ui);font-weight:600;font-size:16px;cursor:pointer;
+    transition:transform .35s var(--ease),box-shadow .35s;box-shadow:0 14px 40px -12px rgba(233,201,138,.5);margin-top:8px}
+  .gen-btn:hover{transform:translateY(-3px);box-shadow:0 22px 54px -12px rgba(233,201,138,.7)}
+  .gen-btn:disabled{opacity:.4;pointer-events:none}
+
+  .result{display:none;margin-top:20px;padding:24px;border:1px solid var(--gold);border-radius:14px;background:rgba(233,201,138,.06);text-align:center}
+  .result.show{display:block}
+  .result h3{font-family:var(--display);font-weight:400;font-size:20px;margin-bottom:12px}
+  .result h3 em{font-style:italic;color:var(--gold-hi)}
+  .result-url{font-family:var(--mono);font-size:13px;color:var(--gold-hi);word-break:break-all;padding:14px;
+    background:rgba(0,0,0,.3);border-radius:10px;margin:12px 0;cursor:pointer;border:1px solid var(--card-line);transition:.2s}
+  .result-url:hover{border-color:var(--gold)}
+  .result .copied{color:var(--gold);font-size:12px;margin-top:8px;min-height:18px}
+
+  .hint{color:var(--warn);font-size:13px;min-height:20px;margin-bottom:8px}
+
+  @media(max-width:600px){
+    .dashboard{padding:24px 16px 60px}
+    .item-row{grid-template-columns:40px 1fr 1fr;gap:6px}
+    .item-row input:nth-child(4){grid-column:2/-1}
+    .row2{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- Gate -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h1>Nova <em>internal.</em></h1>
+    <p>This page is for the Nova team only.</p>
+    <input type="password" class="gate-input" id="passInput" placeholder="Team passphrase" autocomplete="off">
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <h1>Nova <em>internal.</em></h1>
+    <span class="badge">Team only</span>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step">
+    <div class="step-num">1</div>
+    <h2>New order <em>received.</em></h2>
+    <p>Check Discord or the Google Sheet for the latest order. Review the items, allergies, and sub rules.</p>
+    <a href="https://docs.google.com/spreadsheets/d/1fg5uHZsoTYzzEPHGBtPqxgltUE21EU6es8jb-TIzpdQ" target="_blank" class="ext">Open Google Sheet &rarr;</a>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step">
+    <div class="step-num">2</div>
+    <h2>Price the <em>order.</em></h2>
+    <p>Figure out the total cost: groceries + sourcing + delivery + service fee. One all-in number.</p>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step">
+    <div class="step-num">3</div>
+    <h2>Create the <em>Stripe link.</em></h2>
+    <p>Go to Stripe, create a Payment Link for the total amount, and copy the link.</p>
+    <a href="https://dashboard.stripe.com/payment-links/create" target="_blank" class="ext">Create Stripe Payment Link &rarr;</a>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step">
+    <div class="step-num">4</div>
+    <h2>Generate <em>pay page.</em></h2>
+    <p>Fill in the details below. This creates a branded page you can text to the guest.</p>
+
+    <div class="row2">
+      <div class="field"><label>Guest name</label><input id="f-name" placeholder="Jordan Smith"></div>
+      <div class="field"><label>Order ID</label><input id="f-orderId" placeholder="NOV-ABC123"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Property / address</label><input id="f-property" placeholder="The Balboa House"></div>
+      <div class="field"><label>Partner code</label><input id="f-code" placeholder="leveled"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Check-in date</label><input id="f-checkin" type="date"></div>
+      <div class="field"><label>Check-in time</label><input id="f-time" placeholder="4:00 PM"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Allergies</label><input id="f-allergies" placeholder="None"></div>
+      <div class="field"><label>Default sub rule</label><input id="f-sub" placeholder="Get the closest thing"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Total ($)</label><input id="f-total" type="number" placeholder="285"></div>
+      <div class="field"><label>Stripe link</label><input id="f-stripe" placeholder="https://buy.stripe.com/..."></div>
+    </div>
+    <div class="field"><label>Notes from guest</label><textarea id="f-notes" rows="2" placeholder="Any special requests..."></textarea></div>
+
+    <label style="display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:10px;font-weight:500;margin-top:20px">Items</label>
+    <div class="items-list" id="itemsList"></div>
+    <button class="add-item-btn" id="addItemBtn">+ Add item</button>
+
+    <div class="hint" id="genHint" style="margin-top:16px"></div>
+    <button class="gen-btn" id="genBtn">Generate pay page</button>
+
+    <div class="result" id="result">
+      <h3>Pay page <em>created.</em></h3>
+      <p style="color:var(--cream-dim);font-size:14px;margin-bottom:8px">Send this link to the guest:</p>
+      <div class="result-url" id="resultUrl" title="Click to copy"></div>
+      <div class="copied" id="copiedMsg"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Gate
+var PASS = 'nova-team-2026';
+var passInput = document.getElementById('passInput');
+var gateErr = document.getElementById('gateErr');
+
+passInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    if (passInput.value === PASS) {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('dashboard').classList.add('show');
+      sessionStorage.setItem('nova-auth', '1');
+    } else {
+      gateErr.textContent = 'Wrong passphrase.';
+    }
+  }
+});
+
+// auto-login if already authed this session
+if (sessionStorage.getItem('nova-auth')) {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('dashboard').classList.add('show');
+}
+
+// Items builder
+var items = [];
+function renderItems() {
+  var list = document.getElementById('itemsList');
+  list.innerHTML = '';
+  items.forEach(function(it, idx) {
+    var row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = '<input placeholder="Qty" value="' + (it.qty || 1) + '" data-idx="' + idx + '" data-field="qty" style="text-align:center">'
+      + '<input placeholder="Item name" value="' + esc(it.item || '') + '" data-idx="' + idx + '" data-field="item">'
+      + '<input placeholder="Brand" value="' + esc(it.brand || '') + '" data-idx="' + idx + '" data-field="brand">'
+      + '<input placeholder="Size" value="' + esc(it.size || '') + '" data-idx="' + idx + '" data-field="size">'
+      + '<button class="rm-btn" data-idx="' + idx + '">&times;</button>';
+    list.appendChild(row);
+  });
+  // wire events
+  list.querySelectorAll('input').forEach(function(inp) {
+    inp.addEventListener('input', function() {
+      var i = parseInt(inp.dataset.idx);
+      items[i][inp.dataset.field] = inp.value;
+    });
+  });
+  list.querySelectorAll('.rm-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      items.splice(parseInt(btn.dataset.idx), 1);
+      renderItems();
+    });
+  });
+}
+
+document.getElementById('addItemBtn').addEventListener('click', function() {
+  items.push({ qty: 1, item: '', brand: '', size: '', sub: '', note: '' });
+  renderItems();
+});
+
+// add one empty row to start
+items.push({ qty: 1, item: '', brand: '', size: '', sub: '', note: '' });
+renderItems();
+
+// Generate
+document.getElementById('genBtn').addEventListener('click', async function() {
+  var hint = document.getElementById('genHint');
+  var name = document.getElementById('f-name').value.trim();
+  var total = document.getElementById('f-total').value.trim();
+  var stripe = document.getElementById('f-stripe').value.trim();
+
+  if (!name) { hint.textContent = 'Enter the guest name.'; return; }
+  if (!total) { hint.textContent = 'Enter the total.'; return; }
+  if (!stripe) { hint.textContent = 'Paste the Stripe link.'; return; }
+  var validItems = items.filter(function(i) { return i.item && i.item.trim(); });
+  if (!validItems.length) { hint.textContent = 'Add at least one item.'; return; }
+  hint.textContent = '';
+
+  var btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+
+  try {
+    var res = await fetch('/api/pay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        passphrase: PASS,
+        guestName: name,
+        property: document.getElementById('f-property').value.trim(),
+        checkin: document.getElementById('f-checkin').value,
+        checkinTime: document.getElementById('f-time').value.trim(),
+        total: parseFloat(total),
+        stripeUrl: stripe,
+        orderId: document.getElementById('f-orderId').value.trim(),
+        allergies: document.getElementById('f-allergies').value.trim() || 'None',
+        subRule: document.getElementById('f-sub').value.trim() || 'N/A',
+        notes: document.getElementById('f-notes').value.trim(),
+        items: validItems.map(function(i) {
+          return { qty: parseInt(i.qty) || 1, item: i.item.trim(), brand: i.brand.trim(), size: i.size.trim(), sub: i.sub || '', note: i.note || '' };
+        })
+      })
+    });
+    var data = await res.json();
+    if (data.ok) {
+      document.getElementById('resultUrl').textContent = data.url;
+      document.getElementById('result').classList.add('show');
+    } else {
+      hint.textContent = data.error || 'Something went wrong.';
+    }
+  } catch(e) {
+    hint.textContent = 'Error: ' + e.message;
+  }
+  btn.disabled = false;
+  btn.textContent = 'Generate pay page';
+});
+
+// click to copy URL
+document.getElementById('resultUrl').addEventListener('click', function() {
+  navigator.clipboard.writeText(this.textContent);
+  document.getElementById('copiedMsg').textContent = 'Copied!';
+  setTimeout(function() { document.getElementById('copiedMsg').textContent = ''; }, 2000);
+});
+
+function esc(s) { return (s || '').replace(/[&<>"]/g, function(c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+</script>
+</body>
+</html>
