@@ -26,7 +26,8 @@
       "Bash(npx wrangler:*)",
       "Bash(rm _redirects:*)",
       "mcp__plugin_supabase_supabase__list_projects",
-      "mcp__plugin_supabase_supabase__list_organizations"
+      "mcp__plugin_supabase_supabase__list_organizations",
+      "Bash(code:*)"
     ]
   }
 }
