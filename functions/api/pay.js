@@ -149,16 +149,8 @@ function buildPayPage(d) {
     + '<div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-size:16px;line-height:1">&#10003;</span><span>You will receive a photo of the stocked fridge before check-in.</span></div>'
     + '<div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--gold);font-size:16px;line-height:1">&#10003;</span><span>If any item is unavailable, we follow your substitution preference and refund you for anything we cannot fulfill.</span></div>'
     + '</div></div>'
-    + '<div style="margin-top:20px;padding:20px;border:1px solid var(--card-line);border-radius:14px;background:rgba(255,255,255,.02)">'
-    + '<div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-faint);margin-bottom:14px;font-weight:600">Refund &amp; cancellation policy</div>'
-    + '<div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--cream-dim);font-weight:300;line-height:1.6">'
-    + '<p><strong style="color:var(--cream)">Unavailable items:</strong> If we cannot source an item and your substitution rule is to skip it, you will be refunded for that item.</p>'
-    + '<p><strong style="color:var(--cream)">Cancellation before shopping begins:</strong> Full refund minus a 10% service fee.</p>'
-    + '<p><strong style="color:var(--cream)">Cancellation within 48 hours of check-in:</strong> No refund, as items will have been purchased and preparation will be underway.</p>'
-    + '<p><strong style="color:var(--cream)">After delivery:</strong> All sales are final once items have been stocked in the property.</p>'
-    + '<p><strong style="color:var(--cream)">Liability:</strong> Nova Concierge acts as a purchasing agent on your behalf. We are not liable for product quality, allergen cross-contamination, or any issues arising from consumption of purchased goods. By paying, you acknowledge you have reviewed your order and allergy information is accurate.</p>'
-    + '</div></div>'
-    + '<p class="fine" style="margin-top:24px">By paying, you confirm this is your complete order and agree to the above policies. See our full <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.</p>'
+    + '<p class="fine" style="margin-top:32px">By paying, you confirm this is your complete order and agree to the policies below. See our full <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.</p>'
+    + '<p class="fine" style="margin-top:16px;font-size:11px;line-height:1.7;color:rgba(133,127,150,.7)"><strong style="color:var(--cream-faint)">Refund &amp; cancellation policy:</strong> If we cannot source an item and your substitution rule is to skip it, you will be refunded for that item. Cancellation before shopping begins: full refund minus a 10% service fee to cover sourcing and coordination costs. Cancellation within 48 hours of check-in: no refund, as items will have been purchased and preparation will be underway. After delivery: all sales are final once items have been stocked in the property. Nova Concierge acts as a purchasing agent on your behalf. We are not liable for product quality, allergen cross-contamination, or any issues arising from consumption of purchased goods. By paying, you acknowledge you have reviewed your order, your allergy information is accurate, and you accept these terms. Liability is limited to the amount paid for this order.</p>'
     + '</div></body></html>';
 }
 
