@@ -79,9 +79,9 @@ function buildPayPage(d) {
     + '<div class="greeting">Hi ' + esc(d.guestName.split(' ')[0]) + ', your order is <em>ready.</em></div>'
     + '<p class="sub">Review everything below. If it looks right, tap pay to lock it in. We handle the rest.</p>'
     + '<div class="info">'
-    + '<div class="info-box"><div class="label">Property</div><div class="val">' + esc(d.property || 'N/A') + '</div></div>'
+    + (d.property ? '<div class="info-box"><div class="label">Property</div><div class="val">' + esc(d.property) + '</div></div>' : '')
     + '<div class="info-box"><div class="label">Check-in</div><div class="val">' + esc(d.checkin) + ' at ' + esc(d.checkinTime) + '</div></div>'
-    + '<div class="info-box"><div class="label">Allergies</div><div class="val">' + esc(d.allergies) + '</div></div>'
+    + (d.allergies && d.allergies !== 'None' ? '<div class="info-box"><div class="label">Allergies</div><div class="val">' + esc(d.allergies) + '</div></div>' : '')
     + '<div class="info-box"><div class="label">If unavailable</div><div class="val">' + esc(d.subRule) + '</div></div>'
     + '</div>'
     + '<div class="section-title">Your order (' + d.items.length + ' items)</div>'
