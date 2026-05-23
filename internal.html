@@ -56,7 +56,8 @@
 
   /* items builder */
   .items-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-  .item-row{display:grid;grid-template-columns:50px 1fr 1fr 1fr 1fr auto;gap:8px;align-items:end}
+  .item-row{display:grid;grid-template-columns:50px 1fr 1fr;gap:8px;align-items:end;padding:12px;border:1px solid var(--card-line);border-radius:10px;background:rgba(233,201,138,.02);margin-bottom:8px}
+  .item-row-bottom{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;margin-top:6px;grid-column:1/-1}
   .item-row input{padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid var(--card-line);color:var(--cream);
     border-radius:8px;font-family:var(--ui);font-size:13px}
   .item-row input:focus{outline:none;border-color:var(--gold)}
@@ -269,11 +270,14 @@ function renderItems() {
     var row = document.createElement('div');
     row.className = 'item-row';
     row.innerHTML = '<input placeholder="Qty" value="' + (it.qty || 1) + '" data-idx="' + idx + '" data-field="qty" style="text-align:center">'
-      + '<input placeholder="Item" value="' + esc(it.item || '') + '" data-idx="' + idx + '" data-field="item">'
+      + '<input placeholder="Item name" value="' + esc(it.item || '') + '" data-idx="' + idx + '" data-field="item">'
       + '<input placeholder="Brand" value="' + esc(it.brand || '') + '" data-idx="' + idx + '" data-field="brand">'
+      + '<div class="item-row-bottom">'
       + '<input placeholder="Size" value="' + esc(it.size || '') + '" data-idx="' + idx + '" data-field="size">'
       + '<input placeholder="Sub rule" value="' + esc(it.sub || '') + '" data-idx="' + idx + '" data-field="sub">'
-      + '<button class="rm-btn" data-idx="' + idx + '">&times;</button>';
+      + '<input placeholder="Notes" value="' + esc(it.note || '') + '" data-idx="' + idx + '" data-field="note">'
+      + '<button class="rm-btn" data-idx="' + idx + '">&times;</button>'
+      + '</div>';
     list.appendChild(row);
   });
   list.querySelectorAll('input').forEach(function(inp) {
